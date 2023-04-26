@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="shopper-buddy" target="15" />
+      <module name="shopper-buddy" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -14,7 +14,7 @@ public class ItemListService {
     private ItemListRepository iListRepository;
 
     public List<ItemList> getItemListsOrderedByLastModified() {
-        return iListRepository.findAllOrderByLastModified();
+        return iListRepository.findAllByOrderByLastModifiedDesc();
     }
 
     public Set<ItemList> getItemLists() {

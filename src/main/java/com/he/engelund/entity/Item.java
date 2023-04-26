@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import javax.persistence.*;
+
+import jakarta.persistence.*;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,6 +22,5 @@ public class Item {
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "itemList_id")
     private ItemList itemList;
 }

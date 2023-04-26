@@ -31,6 +31,7 @@
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/>
     <logger name="org.hibernate.SQL" level="DEBUG"/>
-    <logger name="org.springframework.data" level="DEBUG"/>
+    <logger name="org.springframework.data" level="TRACE"/>
+    <logger name="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" level="TRACE"/>
 
 </configuration>

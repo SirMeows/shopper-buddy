@@ -14,5 +14,5 @@ public interface ItemListRepository extends JpaRepository<ItemList, Long> {
         return new HashSet<>(findAll());
     }
 
-    List<ItemList> findAllOrderByLastModified();
+    List<ItemList> findAllByOrderByLastModifiedDesc();
 }
