@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -21,9 +20,6 @@ public class Item {
     private Long id;
 
     private String name;
-
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private ItemList itemList;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "item_tag",

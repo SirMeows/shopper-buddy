@@ -2,6 +2,7 @@ package com.he.engelund.config;
 
 import com.he.engelund.dto.ItemDto;
 import com.he.engelund.dto.ItemListDto;
+import com.he.engelund.dto.TagDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.context.annotation.Bean;
@@ -20,4 +21,6 @@ public class ModelMapperConfig {
     public static final Type SET_TYPE_ITEM_DTO = new TypeToken<Set<ItemDto>>() {}.getType();
 
     public static final Type SET_TYPE_ITEM_LIST_DTO = new TypeToken<Set<ItemListDto>>() {}.getType();
+
+    public static final Type SET_TYPE_TAG_DTO = new TypeToken<Set<TagDto>>() {}.getType();
 }
