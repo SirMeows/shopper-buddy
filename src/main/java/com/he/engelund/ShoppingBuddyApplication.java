@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.he.engelund")
+//@EnableJpaRepositories(basePackages = "com.he.engelund")
 public class ShoppingBuddyApplication {
 
     @Bean

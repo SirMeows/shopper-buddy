@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +22,16 @@ public class ItemList {
 
     private String name;
 
+    private final LocalDateTime created = LocalDateTime.now();
+
     private LocalDateTime lastModified; //TODO: Sort lists so that the last modified list is displayed at the top
 
-    private String tag;
+    @ManyToMany(mappedBy = "itemLists", fetch = FetchType.LAZY)
+    private Set<Item> items;
+
+    @PrePersist
+    @PreUpdate
+    private void updateLastModified() {
+        this.lastModified = LocalDateTime.now();
+    }
 }

@@ -1,12 +1,17 @@
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\config\ModelMapperConfig.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\entity\Item.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\api\ItemController.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\service\ItemService.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\ShoppingBuddyApplication.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\repository\ItemListRepository.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\dto\ItemDto.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\repository\ItemRepository.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\service\ItemListService.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\api\ItemListController.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\entity\ItemList.java
-E:\IntelliJ Workspace\shopper-buddy\src\main\java\com\he\engelund\dto\ItemListDto.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\entity\ItemBuilder.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\entity\Tag.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\api\ItemController.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\config\DevelopmentData.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\api\ItemListController.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\repository\ItemListRepository.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\service\ItemListService.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\ShoppingBuddyApplication.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\dto\ItemDto.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\config\ModelMapperConfig.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\entity\Item.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\service\ItemService.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\repository\TagRepository.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\dto\ItemListDto.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\entity\ItemList.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\entity\ItemListBuilder.java
+E:\IntelliJWorkspace\shopper-buddy\src\main\java\com\he\engelund\repository\ItemRepository.java
