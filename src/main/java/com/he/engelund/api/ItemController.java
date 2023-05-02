@@ -5,6 +5,7 @@ import com.he.engelund.entity.Item;
 import com.he.engelund.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.Set;
 import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_DTO;
@@ -19,7 +20,7 @@ public class ItemController {
 
     private ItemService itemService;
 
-    @GetMapping("/")
+    @GetMapping("/get")
     Set<ItemDto> getItems() {
         var items = itemService.getItems();
         Set<ItemDto> itemDtos = mm.map(items, SET_TYPE_ITEM_DTO);

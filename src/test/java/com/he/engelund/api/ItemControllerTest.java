@@ -5,13 +5,12 @@ import com.he.engelund.entity.Item;
 import com.he.engelund.entity.ItemBuilder;
 import com.he.engelund.service.ItemService;
 import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_DTO;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.http.MediaType;
+
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,11 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.is;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 
@@ -46,7 +45,9 @@ class ItemControllerTest {
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext) {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .build();
     }
 
     @Test
@@ -67,7 +68,7 @@ class ItemControllerTest {
 
         when(mm.map(items, SET_TYPE_ITEM_DTO)).thenReturn(itemDtos);
 
-        mockMvc.perform(get("/api/items"))
+        mockMvc.perform(get("/api/items/get"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].name").value("Item 1"))
@@ -106,8 +107,8 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(requestItemDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Test Item")));
+                .andExpect(jsonPath("$[0].id", is(100L)))
+                .andExpect(jsonPath("$[0].name", is("Test Item")));
 
         verify(mm, times(1)).map(requestItemDto, Item.class);
         verify(itemService, times(1)).addItem(requestItem);
