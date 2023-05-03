@@ -19,7 +19,7 @@ public class TagController {
 
     private TagService tagService;
 
-    @GetMapping("/")
+    @GetMapping("/get-all")
     Set<TagDto> getTags() {
         var tags = tagService.getTags();
         Set<TagDto> tagDtos = mm.map(tags, SET_TYPE_TAG_DTO);

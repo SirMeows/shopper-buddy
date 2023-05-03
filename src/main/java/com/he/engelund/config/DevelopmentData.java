@@ -42,7 +42,7 @@ public class DevelopmentData implements ApplicationRunner {
                 .addName("orange juice")
                 .build();
 
-        items.addAll(List.of(muesli, bread));
+        items.addAll(List.of(muesli, bread, juice));
         iRepository.saveAll(items);
     }
 

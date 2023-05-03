@@ -68,8 +68,10 @@ class ItemControllerTest {
 
         when(mm.map(items, SET_TYPE_ITEM_DTO)).thenReturn(itemDtos);
 
+        //TODO: Rewrite test. Set elements can't be fetched with index (is unordered)
         mockMvc.perform(get("/api/items/get"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(1)))
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].name").value("Item 1"))
                 .andExpect(jsonPath("$[1].id").value(2L))
@@ -107,8 +109,10 @@ class ItemControllerTest {
                         .content(objectMapper.writeValueAsString(requestItemDto)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("$[0].id", is(100L)))
-                .andExpect(jsonPath("$[0].name", is("Test Item")));
+                .andExpect(jsonPath("$").isNotEmpty())
+                .andExpect(jsonPath("$.id", is(100L)))
+                .andExpect(jsonPath("$.name", is("Test Item")))
+                .andDo(print());
 
         verify(mm, times(1)).map(requestItemDto, Item.class);
         verify(itemService, times(1)).addItem(requestItem);

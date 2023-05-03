@@ -16,20 +16,20 @@ import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_LIST_DTO;
 @AllArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/item_lists")
+@RequestMapping("/api/item-lists")
 public class ItemListController {
 
     private ItemListService itemListService;
 
     private ModelMapper modelMapper;
 
-    @GetMapping("/")
+    @GetMapping("/get-all")
     Set<ItemList> itemLists() {
         var itemLists = itemListService.getItemLists();
         return modelMapper.map(itemLists, SET_TYPE_ITEM_LIST_DTO);
     }
 
-    @GetMapping("/all_last_modified")
+    @GetMapping("/get-all-last-modified")
     List<ItemList> itemListsOrderedByLastModified() {
         var itemLists = itemListService.getItemListsOrderedByLastModified();
         return modelMapper.map(itemLists, SET_TYPE_ITEM_LIST_DTO);
