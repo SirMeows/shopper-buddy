@@ -19,14 +19,18 @@ public class ItemController {
 
     private ItemService itemService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/get/all")
     Set<ItemDto> getItems() {
         var items = itemService.getItems();
         Set<ItemDto> itemDtos = mm.map(items, SET_TYPE_ITEM_DTO);
         return itemDtos;
     }
 
-    
+    /*@GetMapping("/get/{keyword}")
+    Set<ItemDto> getItemsByKeyword(@PathVariable String keyword) {
+        var items = itemService.findByKeyword(keyword);
+        return mm.map(items, SET_TYPE_ITEM_DTO);
+    }*/
 
     @PostMapping("/add")
     ItemDto addItem(@RequestBody ItemDto body) {

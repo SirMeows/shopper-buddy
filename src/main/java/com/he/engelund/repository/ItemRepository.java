@@ -12,4 +12,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     default Set<Item> findAllSet() {
         return new HashSet<>(findAll());
     }
+
+// TODO: Add searching with keyword from several columns
+//  https://medium.com/javarevisited/jpa-specification-a-generic-search-e8695b1d19ec
 }
