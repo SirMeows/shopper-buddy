@@ -8,6 +8,8 @@ import lombok.Setter;
 import jakarta.persistence.*;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -16,8 +18,8 @@ import org.hibernate.validator.constraints.URL;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false, length = 50, unique = true)
     private String username;
@@ -26,12 +28,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_external_auth_user",
-            joinColumns =
-                    { @JoinColumn(name = "internal_user_id", referencedColumnName = "id") },
-            inverseJoinColumns =
-                    { @JoinColumn(name = "external_auth_user_id", referencedColumnName = "providerUserId")})
+
+    @OneToOne(mappedBy = "user")
     private ExternalAuthenticatedUser externalAuthenticatedUser;
 
     @Enumerated(EnumType.STRING) // TODO: Consider whether provider type is needed

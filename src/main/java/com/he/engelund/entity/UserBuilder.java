@@ -2,6 +2,8 @@ package com.he.engelund.entity;
 
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 public class UserBuilder {
 
@@ -18,7 +20,7 @@ public class UserBuilder {
         this.user = user;
     }
 
-    public UserBuilder addId(Long id) {
+    public UserBuilder addId(UUID id) {
         user.setId(id);
         return this;
     }

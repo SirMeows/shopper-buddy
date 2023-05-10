@@ -13,10 +13,10 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 public class ExternalAuthenticatedUser {
-
+    //The id is a String because input data type is unknown
     @Id
     @Column(nullable = false, unique = true)
-    private String providerUserId;
+    private String providedUserId;
 
     @Column(nullable = false, length = 50, unique = true)
     private String username;
@@ -25,6 +25,7 @@ public class ExternalAuthenticatedUser {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }

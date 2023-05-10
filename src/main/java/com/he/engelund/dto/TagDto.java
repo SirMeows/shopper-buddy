@@ -5,13 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class TagDto {
 
-    private Long id;
+    private UUID id;
 
     private String name;
 }
