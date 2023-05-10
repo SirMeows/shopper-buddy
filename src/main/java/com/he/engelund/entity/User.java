@@ -25,7 +25,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // TODO: Consider whether provider type is needed
     private Provider provider;
 
     private boolean enabled;

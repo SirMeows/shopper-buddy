@@ -15,15 +15,14 @@ import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_DTO;
 @RequestMapping("/api/items")
 public class ItemController {
 
-    private ModelMapper mm;
+    private ModelMapper modelMapper;
 
     private ItemService itemService;
 
-    @GetMapping("/get/all")
+    @GetMapping("/get-all")
     Set<ItemDto> getItems() {
         var items = itemService.getItems();
-        Set<ItemDto> itemDtos = mm.map(items, SET_TYPE_ITEM_DTO);
-        return itemDtos;
+        return modelMapper.map(items, SET_TYPE_ITEM_DTO);
     }
 
     /*@GetMapping("/get/{keyword}")
@@ -34,8 +33,8 @@ public class ItemController {
 
     @PostMapping("/add")
     ItemDto addItem(@RequestBody ItemDto body) {
-        var newItem = mm.map(body, Item.class);
+        var newItem = modelMapper.map(body, Item.class);
         var savedItem =  itemService.addItem(newItem);
-        return mm.map(savedItem, ItemDto.class);
+        return modelMapper.map(savedItem, ItemDto.class);
     }
 }

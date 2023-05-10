@@ -71,6 +71,18 @@
             <artifactId>spring-security-oauth2-jose</artifactId>
             <version>${springboot.security.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.16.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+
         <!-- Database dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

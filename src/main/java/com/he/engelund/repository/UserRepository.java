@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return new HashSet<>(findAll());
     }
 
-    User getUserByUsername(String username);
+    User getUserByUsernameAndEmail(String username, String email);
 
     User getUserByEmail(Email email);
 }

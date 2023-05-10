@@ -8,22 +8,29 @@ import com.he.engelund.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @Service
 public class UserService {
 
     private UserRepository userRepository;
-
-    public void processOAuthPostLogin(String username) {
-        User existUser = userRepository.getUserByUsername(username);
+    //TODO: Check whether email is needed or just username will suffice
+    public void processOAuthPostLogin(String username, String email) {
+        User existUser = userRepository.getUserByUsernameAndEmail(username, email);
 
         if (existUser == null) {
             User newUser = new User();
             newUser.setUsername(username);
+            newUser.setEmail(email);
             newUser.setProvider(Provider.GOOGLE);
             newUser.setEnabled(true);
 
             userRepository.save(newUser);
         }
+    }
+
+    public Set<User> getUsers() {
+        return userRepository.findAllSet();
     }
 }

@@ -15,21 +15,21 @@ import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_TAG_DTO;
 @RequestMapping("/api/tags")
 public class TagController {
 
-    private ModelMapper mm;
+    private ModelMapper modelMapper;
 
     private TagService tagService;
 
     @GetMapping("/get-all")
     Set<TagDto> getTags() {
         var tags = tagService.getTags();
-        Set<TagDto> tagDtos = mm.map(tags, SET_TYPE_TAG_DTO);
+        Set<TagDto> tagDtos = modelMapper.map(tags, SET_TYPE_TAG_DTO);
         return tagDtos;
     }
 
     @PostMapping("/add")
     TagDto addTag(@RequestBody TagDto body) {
-        var newTag = mm.map(body, Tag.class);
+        var newTag = modelMapper.map(body, Tag.class);
         var savedTag =  tagService.addTag(newTag);
-        return mm.map(savedTag, TagDto.class);
+        return modelMapper.map(savedTag, TagDto.class);
     }
 }

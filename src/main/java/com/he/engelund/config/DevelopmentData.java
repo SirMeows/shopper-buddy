@@ -4,6 +4,7 @@ import com.he.engelund.entity.*;
 import com.he.engelund.repository.ItemListRepository;
 import com.he.engelund.repository.ItemRepository;
 import com.he.engelund.repository.TagRepository;
+import com.he.engelund.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -24,6 +25,9 @@ public class DevelopmentData implements ApplicationRunner {
 
     private TagRepository tagRepository;
     private List<Tag> tags;
+
+    private UserRepository userRepository;
+    private List<User> users;
 
     private void makeItems() {
 
@@ -93,10 +97,28 @@ public class DevelopmentData implements ApplicationRunner {
         tagRepository.saveAll(tags);
     }
 
+    private void makeUsers() {
+        var he = UserBuilder
+                .create()
+                .addUsername("he")
+                .addEmail("he-email@gmail.com")
+                .build();
+
+        var wp = UserBuilder
+                .create()
+                .addUsername("wp")
+                .addEmail("wp-email@google.com")
+                .build();
+
+        users.addAll(List.of(he, wp));
+        userRepository.saveAll(users);
+    }
+
     @Override
     public void run(ApplicationArguments args) {
         makeItems();
         makeItemLists();
         makeTags();
+        makeUsers();
     }
 }
