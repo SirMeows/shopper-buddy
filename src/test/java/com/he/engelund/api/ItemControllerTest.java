@@ -28,10 +28,12 @@ import org.modelmapper.ModelMapper;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = ItemController.class)
 class ItemControllerTest {
+
 
     private MockMvc mockMvc;
 
@@ -52,18 +54,20 @@ class ItemControllerTest {
 
     @Test
     public void testGetItems() throws Exception {
+        var item1Id = UUID.randomUUID();
+        var item2Id = UUID.randomUUID();
         Set<Item> items = new HashSet<>();
         items.addAll(Set.of(
-                ItemBuilder.create().addId(1L).addName("Item 1").build(),
-                ItemBuilder.create().addId(2L).addName("Item 2").build()
+                ItemBuilder.create().addId(item1Id).addName("Item 1").build(),
+                ItemBuilder.create().addId(item2Id).addName("Item 2").build()
         ));
 
         when(itemService.getItems()).thenReturn(items);
 
         Set<ItemDto> itemDtos = new HashSet<>();
         itemDtos.addAll(Set.of(
-                new ItemDto(1L, "Item 1"),
-                new ItemDto(2L, "Item 2")
+                new ItemDto(item1Id, "Item 1"),
+                new ItemDto(item2Id, "Item 2")
         ));
 
         when(mm.map(items, SET_TYPE_ITEM_DTO)).thenReturn(itemDtos);
@@ -72,9 +76,9 @@ class ItemControllerTest {
         mockMvc.perform(get("/api/items/get"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(1)))
-                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].id").value(item1Id))
                 .andExpect(jsonPath("$[0].name").value("Item 1"))
-                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].id").value(item2Id))
                 .andExpect(jsonPath("$[1].name").value("Item 2"));
         //Verifies that the service in question is called once and only once
         verify(itemService, times(1)).getItems();
@@ -84,19 +88,21 @@ class ItemControllerTest {
     @Test
     public void testAddItem() throws Exception {
         // Given
-        ItemDto requestItemDto = new ItemDto(100L, "Test Item");
+        final UUID itemId = UUID.randomUUID();
+
+        ItemDto requestItemDto = new ItemDto(itemId, "Test Item");
 
         Item requestItem = ItemBuilder.create()
-                .addId(100L)
+                .addId(itemId)
                 .addName("Test Item")
                 .build();
 
         Item savedItem = ItemBuilder.create()
-                .addId(100L)
+                .addId(itemId)
                 .addName("Test Item")
                 .build();
 
-        ItemDto responseItemDto = new ItemDto(100L, "Test Item");
+        ItemDto responseItemDto = new ItemDto(itemId, "Test Item");
 
         // When
         when(mm.map(requestItemDto, Item.class)).thenReturn(requestItem);
@@ -110,7 +116,7 @@ class ItemControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(jsonPath("$.id", is(100L)))
+                .andExpect(jsonPath("$.id", is(itemId)))
                 .andExpect(jsonPath("$.name", is("Test Item")))
                 .andDo(print());
 

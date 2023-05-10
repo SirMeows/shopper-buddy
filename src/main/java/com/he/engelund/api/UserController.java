@@ -21,7 +21,7 @@ public class UserController {
 
     private UserService userService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/")
     Set<UserDto> getUsers() {
         var users = userService.getUsers();
         return mm.map(users, SET_TYPE_USER_DTO);

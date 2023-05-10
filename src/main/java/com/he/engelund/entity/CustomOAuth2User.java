@@ -15,12 +15,12 @@ public class CustomOAuth2User implements OAuth2User {
         this.oauth2User = oauth2User;
     }
 
-    @Override
+    @Override // add my user id to this map
     public Map<String, Object> getAttributes() {
         return oauth2User.getAttributes();
     }
 
-    @Override
+    @Override// add SUPER_ADMIN or other authorities to collection
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return oauth2User.getAuthorities();
     }

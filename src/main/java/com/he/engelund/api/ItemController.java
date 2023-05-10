@@ -19,7 +19,7 @@ public class ItemController {
 
     private ItemService itemService;
 
-    @GetMapping("/get-all")
+    @GetMapping("/")
     Set<ItemDto> getItems() {
         var items = itemService.getItems();
         return modelMapper.map(items, SET_TYPE_ITEM_DTO);

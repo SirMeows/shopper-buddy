@@ -23,7 +23,7 @@ public class ItemListController {
 
     private ModelMapper modelMapper;
 
-    @GetMapping("/get-all")
+    @GetMapping("/")
     Set<ItemList> itemLists() {
         var itemLists = itemListService.getItemLists();
         return modelMapper.map(itemLists, SET_TYPE_ITEM_LIST_DTO);

@@ -2,6 +2,7 @@ package com.he.engelund.entity;
 
 import lombok.NoArgsConstructor;
 import java.util.HashSet;
+import java.util.UUID;
 
 @NoArgsConstructor
 public class ItemBuilder {
@@ -19,7 +20,7 @@ public class ItemBuilder {
         this.item = item;
     }
 
-    public ItemBuilder addId(Long id) {
+    public ItemBuilder addId(UUID id) {
         item.setId(id);
         return this;
     }

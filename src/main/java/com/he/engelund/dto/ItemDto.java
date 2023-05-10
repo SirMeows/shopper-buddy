@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class ItemDto {
 
-    private Long id;
+    private UUID id;
 
     private String name;
 }
