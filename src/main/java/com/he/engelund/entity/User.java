@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 import org.hibernate.validator.constraints.URL;
-
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -21,21 +20,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, length = 50, unique = true)
-    private String username;
-
     @Email
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column
+    private String username; // Optional, application specific?
 
     @OneToOne(mappedBy = "user")
     private ExternalAuthenticatedUser externalAuthenticatedUser;
-
-    @Enumerated(EnumType.STRING) // TODO: Consider whether provider type is needed
-    private Provider provider;
-
-    private boolean enabled;
 
     @URL
     @Column(length = 500)

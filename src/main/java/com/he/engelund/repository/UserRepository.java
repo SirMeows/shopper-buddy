@@ -1,20 +1,26 @@
 package com.he.engelund.repository;
 
 import com.he.engelund.entity.User;
-import jakarta.validation.constraints.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     default Set<User> findAllSet() {
         return new HashSet<>(findAll());
     }
 
-    User getUserByUsernameAndEmail(String username, String email);
+    User getUserByUsername(String username);
 
-    User getUserByEmail(Email email);
+    User getUserById(UUID uuid);
+
+    User getUserByEmail(String email);
+
+    User getUserByExternalAuthenticatedUser_ProvidedUserId(String externalUserId);
+
+    boolean existsByExternalAuthenticatedUser_ProvidedUserId(String externalUserId);
 }

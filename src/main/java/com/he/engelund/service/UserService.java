@@ -2,32 +2,53 @@ package com.he.engelund.service;
 
 // Source: https://www.codejava.net/frameworks/spring-boot/oauth2-login-with-google-example#:~:text=package%20net.codejava%3B-,import%20org.springframework.beans.factory.annotation.Autowired%3B,%7D,-Here%2C%20we%20check
 
-import com.he.engelund.entity.Provider;
+import com.he.engelund.entity.ExternalAuthenticatedUser;
 import com.he.engelund.entity.User;
+import com.he.engelund.entity.UserBuilder;
+import com.he.engelund.exception.FailedToCreateNewUserException;
+import com.he.engelund.repository.ExternalAuthenticatedUserRepository;
 import com.he.engelund.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
 public class UserService {
 
     private UserRepository userRepository;
-    //TODO: Check whether email is needed or just username will suffice
-    public void processOAuthPostLogin(String username, String email) {
-        User existUser = userRepository.getUserByUsernameAndEmail(username, email);
 
-        if (existUser == null) {
-            User newUser = new User();
-            newUser.setUsername(username);
-            newUser.setEmail(email);
-            newUser.setProvider(Provider.GOOGLE);
-            newUser.setEnabled(true);
+    private ExternalAuthenticatedUserRepository externalAuthUserRepository;
 
-            userRepository.save(newUser);
+
+    public boolean isUserRegistered(String externalId) {
+        return userRepository.existsByExternalAuthenticatedUser_ProvidedUserId(externalId);
+    }
+
+    public void registerUser(String externalId, String externalEmail) {
+
+
+        try {
+            var newUser = UserBuilder
+                    .create()
+                    .addEmail(externalEmail)
+                    .build();
+
+            var newExternalAuthenticatedUser = new ExternalAuthenticatedUser();
+            newExternalAuthenticatedUser.setUser(newUser);
+            newExternalAuthenticatedUser.setProvidedUserId(externalId);
+            newExternalAuthenticatedUser.setEmail(externalEmail);
+            //TODO: Set other fields
+            externalAuthUserRepository.save(newExternalAuthenticatedUser);
+
+        } catch (Exception e) {
+            throw new FailedToCreateNewUserException(e);
         }
+    }
+
+    public User getUserById(UUID uuid) {
+        return userRepository.getUserById(uuid);
     }
 
     public Set<User> getUsers() {

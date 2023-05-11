@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,18 +16,22 @@ import jakarta.persistence.*;
 @Entity
 public class ExternalAuthenticatedUser {
     //The id is a String because input data type is unknown
+
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     @Column(nullable = false, unique = true)
     private String providedUserId;
-
-    @Column(nullable = false, length = 50, unique = true)
-    private String username;
 
     @Email
     @Column(nullable = false, unique = true)
     private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "saved_user_id", referencedColumnName = "id")
     private User user;
+
+    @Enumerated(EnumType.STRING) // TODO: Consider whether provider type is needed
+    private Provider provider;
 }
