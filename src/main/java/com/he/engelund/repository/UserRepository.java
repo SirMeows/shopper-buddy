@@ -1,5 +1,6 @@
 package com.he.engelund.repository;
 
+import com.he.engelund.entity.ExternalAuthenticatedUser;
 import com.he.engelund.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,13 +15,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
         return new HashSet<>(findAll());
     }
 
-    User getUserByUsername(String username);
+    User getUserByExternalAuthenticatedUserId(String externalId);
 
-    User getUserById(UUID uuid);
+    boolean existsByExternalAuthenticatedUserId(String externalId);
 
-    User getUserByEmail(String email);
-
-    User getUserByExternalAuthenticatedUser_ProvidedUserId(String externalUserId);
-
-    boolean existsByExternalAuthenticatedUser_ProvidedUserId(String externalUserId);
+    //TODO: Fix this query. It now returns the User, probably
+    ExternalAuthenticatedUser getExternalAuthenticatedUserByProvidedUserId(String providedId);
 }

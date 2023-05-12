@@ -4,9 +4,12 @@ package com.he.engelund.entity;
 
 import java.util.Collection;
 import java.util.Map;
+
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+@Setter
 public class GoogleOAuth2User implements OAuth2User {
 
     private OAuth2User oauth2User;
@@ -17,7 +20,7 @@ public class GoogleOAuth2User implements OAuth2User {
         this.oauth2User = oauth2User;
     }
 
-    @Override // add my user id to this map
+    @Override
     public Map<String, Object> getAttributes() {
         return oauth2UserAttributes;
     }
@@ -58,7 +61,7 @@ public class GoogleOAuth2User implements OAuth2User {
         return oauth2User.getAttribute("locale");
     }
 
-    public void setInternalUserId(String internalUserId) {
+    public void addInternalUserId(String internalUserId) {
         oauth2UserAttributes.put("internal_user_id", internalUserId);
     }
 

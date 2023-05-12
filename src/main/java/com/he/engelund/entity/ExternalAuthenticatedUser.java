@@ -34,4 +34,13 @@ public class ExternalAuthenticatedUser {
 
     @Enumerated(EnumType.STRING) // TODO: Consider whether provider type is needed
     private Provider provider;
+
+    @Column
+    private String imageUrl;
+
+    @Column
+    private String locale;
+/*
+    @Column
+    private boolean isVerifiedEmail;*/
 }

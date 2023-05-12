@@ -11,34 +11,30 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
-// Every time an authenticated user enters one of our pages, this google user gets loaded and checked against saved user
-    private UserService userService;
 
+    // Every time an authenticated user enters one of our pages it gets loaded and checked against saved user
+    // Spring needs the modified OAuth2User that it gets through the loadUser method
+    private UserService userService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User =  super.loadUser(userRequest);
         GoogleOAuth2User googleOAuth2User = new GoogleOAuth2User(oAuth2User);
         var googleOAuth2UserId = googleOAuth2User.getExternalUserId();
+        var isRegistered= userService.isUserRegistered(googleOAuth2UserId);
 
-       var isRegistered= userService.isUserRegistered(googleOAuth2UserId);
-
-       if(isRegistered) {
-           // update externalAuthenticatedUser
-       } else {
+        if(!isRegistered) {
            userService.registerUser(googleOAuth2UserId, googleOAuth2User.getEmail());
-       }
+        } else {
+            userService.updateExternalAuthenticatedUser(googleOAuth2User);
+        }
 
-
-        // if ExternalAuthenticatedUser and CustomOAuth2User info doesn't match, then update
-
-        // if user creation fails throw exception (show error page)
-
-        // add my own user id to the customOAuth2 user (getAttributes)
+        // Adds internalUserId to attribute map
+        var internalUserId = userService.getInternalUserIdAsStringByExternalUserId(googleOAuth2UserId);
+        googleOAuth2User.addInternalUserId(internalUserId);
 
         // optionally add different granted authorities (getAuthorities)
 
-
-        return oAuth2User; // add internal user id here
+        return googleOAuth2User;
     }
 }
