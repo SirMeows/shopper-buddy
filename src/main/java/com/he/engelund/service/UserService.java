@@ -1,7 +1,5 @@
 package com.he.engelund.service;
 
-// Source: https://www.codejava.net/frameworks/spring-boot/oauth2-login-with-google-example#:~:text=package%20net.codejava%3B-,import%20org.springframework.beans.factory.annotation.Autowired%3B,%7D,-Here%2C%20we%20check
-
 import com.he.engelund.entity.ExternalAuthenticatedUser;
 import com.he.engelund.entity.GoogleOAuth2User;
 import com.he.engelund.entity.User;
@@ -49,7 +47,7 @@ public class UserService {
 
     public void updateExternalAuthenticatedUser(GoogleOAuth2User googleOAuth2User) {
         var externalAuthUser =
-                userRepository.getExternalAuthenticatedUserByProvidedUserId(googleOAuth2User.getExternalUserId());
+                externalAuthUserRepository.getExternalAuthenticatedUserByProvidedUserId(googleOAuth2User.getExternalUserId());
 
         externalAuthUser.setEmail(googleOAuth2User.getEmail());
         externalAuthUser.setImageUrl(googleOAuth2User.getImageUrl());
@@ -66,9 +64,4 @@ public class UserService {
     public Set<User> getUsers() {
         return userRepository.findAllSet();
     }
-
- /*   public ExternalAuthenticatedUser getExternalAuthenticatedUserByInternalUserId(String internalId) {
-        var internalUUID = UUID.fromString(internalId);
-        return userRepository.getExternalAuthenticatedUserByInternalUserId(internalUUID);
-    }*/
 }

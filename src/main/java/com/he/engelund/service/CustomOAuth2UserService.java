@@ -18,11 +18,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oAuth2User =  super.loadUser(userRequest);
-        GoogleOAuth2User googleOAuth2User = new GoogleOAuth2User(oAuth2User);
+        var oAuth2User =  super.loadUser(userRequest);
+        var googleOAuth2User = new GoogleOAuth2User(oAuth2User);
         var googleOAuth2UserId = googleOAuth2User.getExternalUserId();
         var isRegistered= userService.isUserRegistered(googleOAuth2UserId);
 
+        //TODO: Add check for whether user with this email has already been registered
         if(!isRegistered) {
            userService.registerUser(googleOAuth2UserId, googleOAuth2User.getEmail());
         } else {

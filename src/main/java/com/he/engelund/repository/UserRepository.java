@@ -18,7 +18,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     User getUserByExternalAuthenticatedUserId(String externalId);
 
     boolean existsByExternalAuthenticatedUserId(String externalId);
-
-    //TODO: Fix this query. It now returns the User, probably
-    ExternalAuthenticatedUser getExternalAuthenticatedUserByProvidedUserId(String providedId);
 }
