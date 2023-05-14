@@ -25,12 +25,6 @@ public class ItemController {
         return modelMapper.map(items, SET_TYPE_ITEM_DTO);
     }
 
-    /*@GetMapping("/get/{keyword}")
-    Set<ItemDto> getItemsByKeyword(@PathVariable String keyword) {
-        var items = itemService.findByKeyword(keyword);
-        return mm.map(items, SET_TYPE_ITEM_DTO);
-    }*/
-
     @PostMapping("/add")
     ItemDto addItem(@RequestBody ItemDto body) {
         var newItem = modelMapper.map(body, Item.class);

@@ -1,11 +1,10 @@
 package com.he.engelund.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.UUID;
 
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

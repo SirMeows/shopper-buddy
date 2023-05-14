@@ -19,8 +19,4 @@ public class ItemService {
     public Item addItem(Item item) {
         return itemRepository.save(item);
     }
-
-/*    public Set<Item> getItemsByKeyword(String keyword) {
-        return itemRepository.findByKeyword(keyword);
-    }*/
 }

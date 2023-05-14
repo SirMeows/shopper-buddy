@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,7 +43,7 @@ class ItemControllerTest {
     private ItemService itemService;
 
     @MockBean
-    private ModelMapper mm;
+    private ModelMapper modelMapper;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -70,58 +72,50 @@ class ItemControllerTest {
                 new ItemDto(item2Id, "Item 2")
         ));
 
-        when(mm.map(items, SET_TYPE_ITEM_DTO)).thenReturn(itemDtos);
+        when(modelMapper.map(items, SET_TYPE_ITEM_DTO)).thenReturn(itemDtos);
 
         //TODO: Rewrite test. Set elements can't be fetched with index (is unordered)
-        mockMvc.perform(get("/api/items/get"))
+        mockMvc.perform(get("/api/items/"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()", is(1)))
-                .andExpect(jsonPath("$[0].id").value(item1Id))
-                .andExpect(jsonPath("$[0].name").value("Item 1"))
-                .andExpect(jsonPath("$[1].id").value(item2Id))
-                .andExpect(jsonPath("$[1].name").value("Item 2"));
+                //Checks that JSON response contains the items with correct id and name
+                .andExpect(jsonPath("$..[?(@.id == '" + item1Id + "' && @.name == 'Item 1')]").exists())
+                .andExpect(jsonPath("$..[?(@.id == '" + item2Id + "' && @.name == 'Item 2')]").exists())
+                //Verifies that the service in question is called once and only once
+                .andExpect(jsonPath("$[*].id", containsInAnyOrder(item1Id.toString(), item2Id.toString())))
+                .andExpect(jsonPath("$[*].name", containsInAnyOrder("Item 1", "Item 2")));
+
         //Verifies that the service in question is called once and only once
         verify(itemService, times(1)).getItems();
-        verify(mm, times(1)).map(items, SET_TYPE_ITEM_DTO);
+        verify(modelMapper, times(1)).map(items, SET_TYPE_ITEM_DTO);
     }
 
     @Test
     public void testAddItem() throws Exception {
         // Given
         final UUID itemId = UUID.randomUUID();
-
         ItemDto requestItemDto = new ItemDto(itemId, "Test Item");
-
-        Item requestItem = ItemBuilder.create()
-                .addId(itemId)
-                .addName("Test Item")
-                .build();
-
-        Item savedItem = ItemBuilder.create()
-                .addId(itemId)
-                .addName("Test Item")
-                .build();
-
+        Item requestItem = ItemBuilder.create().addId(itemId).addName("Test Item").build();
+        Item savedItem = ItemBuilder.create().addId(itemId).addName("Test Item").build();
         ItemDto responseItemDto = new ItemDto(itemId, "Test Item");
 
         // When
-        when(mm.map(requestItemDto, Item.class)).thenReturn(requestItem);
+        when(modelMapper.map(requestItemDto, Item.class)).thenReturn(requestItem);
         when(itemService.addItem(requestItem)).thenReturn(savedItem);
-        when(mm.map(savedItem, ItemDto.class)).thenReturn(responseItemDto);
+        when(modelMapper.map(savedItem, ItemDto.class)).thenReturn(responseItemDto);
 
         // Then
+        var content = objectMapper.writeValueAsString(requestItemDto);
         mockMvc.perform(post("/api/items/add")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestItemDto)))
+                        .content(content))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(jsonPath("$").isNotEmpty())
-                .andExpect(jsonPath("$.id", is(itemId)))
+                .andExpect(jsonPath("$.id", is(itemId.toString())))
                 .andExpect(jsonPath("$.name", is("Test Item")))
                 .andDo(print());
 
-        verify(mm, times(1)).map(requestItemDto, Item.class);
+        verify(modelMapper, times(1)).map(requestItemDto, Item.class);
         verify(itemService, times(1)).addItem(requestItem);
-        verify(mm, times(1)).map(savedItem, ItemDto.class);
+        verify(modelMapper, times(1)).map(savedItem, ItemDto.class);
     }
 }
