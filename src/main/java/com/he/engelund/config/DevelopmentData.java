@@ -1,16 +1,15 @@
 package com.he.engelund.config;
 
 import com.he.engelund.entity.*;
-import com.he.engelund.repository.ItemListRepository;
-import com.he.engelund.repository.ItemRepository;
-import com.he.engelund.repository.TagRepository;
-import com.he.engelund.repository.UserRepository;
+import com.he.engelund.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 @AllArgsConstructor
 @Controller
@@ -29,8 +28,13 @@ public class DevelopmentData implements ApplicationRunner {
     private UserRepository userRepository;
     private List<User> users;
 
-    private void makeItems() {
+    private RoleRepository roleRepository;
+    private List<Role> roles;
 
+    private ListUserRoleRepository listUserRoleRepo;
+    private List<ListUserRole> listUserRoles;
+
+    private void makeItems() {
         var muesli = ItemBuilder
                 .create()
                 .addName("fruit and nut muesli")
@@ -51,7 +55,6 @@ public class DevelopmentData implements ApplicationRunner {
     }
 
     private void makeItemLists() {
-
         var groceries = ItemListBuilder
                 .create()
                 .addName("groceries")
@@ -72,26 +75,10 @@ public class DevelopmentData implements ApplicationRunner {
     }
 
     private void makeTags() {
-
-    var bakeryProducts = TagBuilder
-            .create()
-            .addName("bakery products")
-            .build();
-
-        var drinks = TagBuilder
-                .create()
-                .addName("drinks")
-                .build();
-
-        var hFavorite = TagBuilder
-                .create()
-                .addName("He likes")
-                .build();
-
-        var wFavorite = TagBuilder
-                .create()
-                .addName("Wouter likes")
-                .build();
+        var bakeryProducts = TagBuilder.create().addName("bakery products").build();
+        var drinks = TagBuilder.create().addName("drinks").build();
+        var hFavorite = TagBuilder.create().addName("He likes").build();
+        var wFavorite = TagBuilder.create().addName("Wouter likes").build();
 
         tags.addAll(List.of(bakeryProducts, drinks, hFavorite, wFavorite));
         tagRepository.saveAll(tags);
@@ -114,11 +101,48 @@ public class DevelopmentData implements ApplicationRunner {
         userRepository.saveAll(users);
     }
 
+    private void makeRoles() {
+        var owner = new Role();
+        owner.setRoleName(RoleName.OWNER);
+
+        var editor = new Role();
+        editor.setRoleName(RoleName.EDITOR);
+
+        var viewer = new Role();
+        viewer.setRoleName(RoleName.VIEWER);
+
+        roles.addAll(List.of(owner, editor, viewer));
+        roleRepository.saveAll(roles);
+    }
+
+    private void makeListUserRoles() {
+        IntStream.rangeClosed(0,10).forEach(i -> listUserRoles.add(makeListUserRole()));
+        listUserRoleRepo.saveAll(listUserRoles);
+    }
+
+    private ListUserRole makeListUserRole() {
+        var random = new Random();
+        var randItemList = itemLists.get(random.nextInt(itemLists.size()));
+        var randUser = users.get(random.nextInt(users.size()));
+        var randRole = roles.get(random.nextInt(roles.size()));
+
+        var newListUserRole = ListUserRoleBuilder
+                .create()
+                .addItemList(randItemList)
+                .addUser(randUser)
+                .addRole(randRole)
+                .build();
+
+        return newListUserRole;
+    }
+
     @Override
     public void run(ApplicationArguments args) {
         makeItems();
         makeItemLists();
         makeTags();
         makeUsers();
+        makeRoles();
+        makeListUserRoles();
     }
 }

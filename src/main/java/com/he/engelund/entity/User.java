@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 import org.hibernate.validator.constraints.URL;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -33,4 +35,7 @@ public class User {
     @URL
     @Column(length = 500)
     private String imgUrl;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ListUserRole> listUserRoles = new HashSet<>();
 }

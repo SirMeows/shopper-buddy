@@ -30,6 +30,9 @@ public class ItemList {
     @ManyToMany(mappedBy = "itemLists", fetch = FetchType.LAZY)
     private Set<Item> items;
 
+    @OneToMany(mappedBy = "itemList")
+    private Set<ListUserRole> listUserRoles = new HashSet<>();
+
     @PrePersist
     @PreUpdate
     private void updateLastModified() {
