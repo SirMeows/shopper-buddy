@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Repository
-public interface ItemListRepository extends JpaRepository<ItemList, Long> {
+public interface ItemListRepository extends JpaRepository<ItemList, UUID> {
 
     default Set<ItemList> findAllSet() {
         return new HashSet<>(findAll());

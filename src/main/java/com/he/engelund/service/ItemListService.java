@@ -1,34 +1,52 @@
 package com.he.engelund.service;
 
-import com.he.engelund.entity.ItemList;
-import com.he.engelund.entity.ListUserRoleBuilder;
-import com.he.engelund.entity.Role;
-import com.he.engelund.entity.User;
+import com.he.engelund.entity.*;
 import com.he.engelund.repository.ItemListRepository;
+import com.he.engelund.repository.ItemRepository;
 import com.he.engelund.repository.ListUserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
 public class ItemListService {
 
-    private ItemListRepository iListRepository;
+    private ItemListRepository itemListRepository;
+
+    private ItemRepository itemRepository;
 
     private ListUserRoleRepository listUserRoleRepository;
 
     public List<ItemList> getItemListsOrderedByLastModified() {
-        return iListRepository.findAllByOrderByLastModifiedDesc();
+        return itemListRepository.findAllByOrderByLastModifiedDesc();
     }
 
     public Set<ItemList> getItemLists() {
-        return iListRepository.findAllSet();
+        return itemListRepository.findAllSet();
     }
 
     public ItemList addItemList(ItemList itemList) {
-        return iListRepository.save(itemList);
+        return itemListRepository.save(itemList);
+    }
+
+    public void addItemToItemList(String listId, Item item) {
+        var itemList = itemListRepository.getReferenceById(UUID.fromString(listId));
+        addToList(itemList, item);
+    }
+
+    public void addItemToItemList(String listId, String itemId) {
+        var itemList = itemListRepository.getReferenceById(UUID.fromString(listId));
+        var item = itemRepository.getReferenceById(UUID.fromString(itemId));
+        addToList(itemList, item);
+    }
+
+    private void addToList(ItemList itemList, Item item) {
+        var items = itemList.getItems();
+        items.add(item);
+        itemListRepository.save(itemList);
     }
 
     public void shareItemList(User userToShareWith, ItemList itemList, Role role) {
