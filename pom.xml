@@ -12,7 +12,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <springboot.version>3.0.4</springboot.version>
-        <springboot.security.version>6.0.2</springboot.security.version>
+        <springboot.security.version>6.0.3</springboot.security.version>
     </properties>
 
     <dependencies>
@@ -71,6 +71,12 @@
             <artifactId>spring-security-oauth2-jose</artifactId>
             <version>${springboot.security.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+            <version>${springboot.security.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.google.auth</groupId>
             <artifactId>google-auth-library-oauth2-http</artifactId>

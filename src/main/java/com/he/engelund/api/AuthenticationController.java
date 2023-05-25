@@ -19,8 +19,6 @@ import java.security.SecureRandom;
 @RestController
 public class AuthenticationController {
 
-    //private String googleAuthConfigPrefix = "spring.security.oauth2.client.registration.google.";
-
     @GetMapping("/api/auth")
     public String login(HttpServletRequest request,
                         @Value("${spring.security.oauth2.client.registration.google.client-id}") String clientId) {

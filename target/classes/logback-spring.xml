@@ -28,7 +28,7 @@
     </appender>
 
     <!-- Custom logger configurations -->
-    <!-- <logger name="org.springframework" level="INFO"/> -->
+    <logger name="org.springframework.security" level="DEBUG"/>
     <!-- <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/> -->
     <!-- <logger name="org.hibernate.SQL" level="DEBUG"/> -->
     <!-- <logger name="org.springframework.data" level="TRACE"/> -->

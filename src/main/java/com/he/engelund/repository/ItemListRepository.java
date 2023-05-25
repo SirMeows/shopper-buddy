@@ -3,10 +3,8 @@ package com.he.engelund.repository;
 import com.he.engelund.entity.ItemList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 
 @Repository
 public interface ItemListRepository extends JpaRepository<ItemList, UUID> {
@@ -16,4 +14,6 @@ public interface ItemListRepository extends JpaRepository<ItemList, UUID> {
     }
 
     List<ItemList> findAllByOrderByLastModifiedDesc();
+
+    Optional<ItemList> findById(UUID uuid);
 }

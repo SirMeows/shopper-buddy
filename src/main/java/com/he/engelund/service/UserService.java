@@ -5,11 +5,13 @@ import com.he.engelund.entity.GoogleOAuth2User;
 import com.he.engelund.entity.User;
 import com.he.engelund.entity.UserBuilder;
 import com.he.engelund.exception.FailedToCreateNewUserException;
+import com.he.engelund.exception.UserNotFoundException;
 import com.he.engelund.repository.ExternalAuthenticatedUserRepository;
 import com.he.engelund.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -18,7 +20,6 @@ public class UserService {
     private UserRepository userRepository;
 
     private ExternalAuthenticatedUserRepository externalAuthUserRepository;
-
 
     public boolean isUserRegistered(String externalId) {
         return userRepository.existsByExternalAuthenticatedUserId(externalId);
@@ -63,5 +64,9 @@ public class UserService {
 
     public Set<User> getUsers() {
         return userRepository.findAllSet();
+    }
+
+    public User findById(String userId) {
+        return userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
     }
 }
