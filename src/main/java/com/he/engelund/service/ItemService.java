@@ -1,6 +1,7 @@
 package com.he.engelund.service;
 
 import com.he.engelund.entity.Item;
+import com.he.engelund.exception.ItemNotFoundException;
 import com.he.engelund.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class ItemService {
     }
 
     public Item getItemById(String itemId) {
-        return itemRepository.getReferenceById(UUID.fromString(itemId));
+        return itemRepository.findById(UUID.fromString(itemId)).orElseThrow(() -> new ItemNotFoundException(itemId));
     }
 
     public Item addItem(Item item) {
