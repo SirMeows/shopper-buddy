@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -75,13 +76,27 @@ public class ItemListService {
 
     private boolean userOwnsTheList(String userId, ItemList itemList) {
         var ownerRole = roleService.findByName(RoleName.OWNER);
-        var listUserRole = listUserRoleService.findByItemListAndRole(itemList, ownerRole);
+        var listUserRoles = listUserRoleService.findByItemListAndRole(itemList, ownerRole);
         var providedUserId = UUID.fromString(userId);
-        var actualOwnerId = listUserRole.getUser().getId();
+        var actualOwnerId = findActualOwner(listUserRoles).getId();
 
         if(providedUserId.equals(actualOwnerId)) {
             return true;
         }
         return false;
+    }
+
+    private User findActualOwner(Set<ListUserRole> listUserRoles) {
+        List<User> owners = listUserRoles.stream()
+                .map(ListUserRole::getUser)
+                .collect(Collectors.toList());
+
+        if (owners.size() > 1) {
+            throw new RuntimeException("Unexpected number of owners: " + owners.size());
+        } else if (owners.isEmpty()) {
+            throw new RuntimeException("No owners found");
+        }
+
+        return owners.get(0);
     }
 }
