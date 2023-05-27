@@ -2,6 +2,7 @@ package com.he.engelund.api;
 
 import com.he.engelund.dto.ItemDto;
 import com.he.engelund.dto.ItemListDto;
+import com.he.engelund.dto.ShareItemListDto;
 import com.he.engelund.entity.Item;
 import com.he.engelund.entity.ItemList;
 import com.he.engelund.entity.RoleName;
@@ -11,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
 import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_LIST_DTO;
 
 @AllArgsConstructor
@@ -19,7 +22,7 @@ import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_LIST_DTO;
 @RequestMapping("/api/item-lists")
 public class ItemListController {
 
-    //TODO: Convert String IDs to UUID ASAP, already in Controllers, not Service
+    //TODO: Convert String IDs to UUID already in Controllers, not Service
     private ItemListService itemListService;
 
     private ModelMapper modelMapper;
@@ -36,11 +39,12 @@ public class ItemListController {
         return modelMapper.map(itemLists, SET_TYPE_ITEM_LIST_DTO);
     }
 
-    //TODO: ItemListID as first path variable, the rest in a dto
-    @PostMapping("/{listId}/share")
-    void shareItemList(@PathVariable String listId, @RequestParam String ownerId, @RequestParam String targetUserId, @RequestParam String targetUserRole) {
-        RoleName roleName = Enum.valueOf(RoleName.class, targetUserRole); // Will throw IllegalArgumentException if this is not a valid RoleName
-        itemListService.shareItemList(ownerId, targetUserId, listId, roleName);
+    @PostMapping("/{id}/share")
+    void shareItemList(@PathVariable String id, @RequestBody ShareItemListDto body) {
+        var roleName = Enum.valueOf(RoleName.class, body.getTargetUserRoleName()); // Will throw IllegalArgumentException if this is not a valid RoleName
+        var listUserId = UUID.fromString(body.getListOwnerId());
+        var targetUserId = UUID.fromString(body.getTargetUserId());
+        itemListService.shareItemList(UUID.fromString(id), listUserId, targetUserId, roleName);
     }
 
     @PostMapping("/create")
@@ -52,11 +56,11 @@ public class ItemListController {
     @PostMapping("/{id}/new-item")
     void addNewItemToItemList(@PathVariable String id, @RequestBody ItemDto body) {
         var newItem = modelMapper.map(body, Item.class);
-        itemListService.addItemToItemList(id, newItem);
+        itemListService.addItemToItemList(UUID.fromString(id), newItem);
     }
 
-    @PostMapping("/{listId}/add/{itemId}")
-    void addExistingItemToItemList(@PathVariable String listId, @PathVariable String itemId) {
-        itemListService.addItemToItemList(listId, itemId);
+    @PostMapping("/{id}/add/{itemId}")
+    void addExistingItemToItemList(@PathVariable String id, @PathVariable String itemId) {
+        itemListService.addItemToItemList(UUID.fromString(id), UUID.fromString(itemId));
     }
 }

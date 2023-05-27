@@ -37,13 +37,13 @@ public class ItemListService {
         return itemListRepository.save(itemList);
     }
 
-    public void addItemToItemList(String listId, Item item) {
-        var itemList = itemListRepository.getReferenceById(UUID.fromString(listId));
+    public void addItemToItemList(UUID listId, Item item) {
+        var itemList = itemListRepository.getReferenceById(listId);
         addToList(itemList, item);
     }
 
-    public void addItemToItemList(String listId, String itemId) {
-        var itemList = itemListRepository.getReferenceById(UUID.fromString(listId));
+    public void addItemToItemList(UUID listId, UUID itemId) {
+        var itemList = itemListRepository.getReferenceById(listId);
         var item = itemService.getItemById(itemId);
         addToList(itemList, item);
     }
@@ -54,16 +54,16 @@ public class ItemListService {
         itemListRepository.save(itemList);
     }
 
-    public void shareItemList(String sharerId, String targetUserId, String itemListId, RoleName roleName) {
-
+    public void shareItemList(UUID itemListId, UUID sharerId, UUID targetUserId, RoleName roleName) {
+        //TODO: Consider whether more than one owner should be allowed in order to change ownership
         if(roleName == RoleName.OWNER) {
             throw new IllegalArgumentException();
         }
         var targetUser = userService.findById(targetUserId);
-        var itemList = itemListRepository.findById(UUID.fromString(itemListId)).orElseThrow(() -> new ItemListNotFoundException(itemListId));
+        var itemList = itemListRepository.findById(itemListId).orElseThrow(() -> new ItemListNotFoundException(itemListId));
         var role = roleService.findByName(roleName);
 
-        if(userOwnsTheList(UUID.fromString(sharerId), itemList)) {
+        if(userOwnsTheList(sharerId, itemList)) {
             var newListUserRole = ListUserRoleBuilder
                     .create()
                     .addUser(targetUser)

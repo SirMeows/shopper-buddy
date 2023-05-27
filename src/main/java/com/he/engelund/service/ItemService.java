@@ -18,8 +18,8 @@ public class ItemService {
         return itemRepository.findAllSet();
     }
 
-    public Item getItemById(String itemId) {
-        return itemRepository.findById(UUID.fromString(itemId)).orElseThrow(() -> new ItemNotFoundException(itemId));
+    public Item getItemById(UUID itemId) {
+        return itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
     }
 
     public Item addItem(Item item) {

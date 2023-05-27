@@ -1,5 +1,7 @@
 package com.he.engelund.exception;
 
+import java.util.UUID;
+
 //TODO: Good to have a custom UserUnauthorisedException
 public class UserNotListOwnerException extends RuntimeException {
 
@@ -17,7 +19,7 @@ public class UserNotListOwnerException extends RuntimeException {
         super(message, cause);
     }
 
-    public UserNotListOwnerException(String id) {
+    public UserNotListOwnerException(UUID id) {
         super(String.format(message, id));
 
     }

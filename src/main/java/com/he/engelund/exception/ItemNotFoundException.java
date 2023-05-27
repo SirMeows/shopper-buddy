@@ -2,6 +2,8 @@ package com.he.engelund.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.UUID;
+
 public class ItemNotFoundException extends EntityNotFoundException {
 
     private static final String message = "Item with id '%s' not found";
@@ -19,5 +21,9 @@ public class ItemNotFoundException extends EntityNotFoundException {
 
     public ItemNotFoundException(String id, Exception cause) {
         super(String.format(message, id), cause);
+    }
+
+    public ItemNotFoundException(UUID id) {
+        super(String.format(message, id));
     }
 }

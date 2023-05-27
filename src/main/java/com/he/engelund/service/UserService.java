@@ -66,7 +66,7 @@ public class UserService {
         return userRepository.findAllSet();
     }
 
-    public User findById(String userId) {
-        return userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new UserNotFoundException(userId));
+    public User findById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 }

@@ -64,12 +64,12 @@ class ItemListServiceTest {
                 .build();
 
         // given
-        when(userService.findById(targetUserIdString)).thenReturn(targetUser);
+        when(userService.findById(targetUserUUID)).thenReturn(targetUser);
         when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.of(itemList));
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
         doNothing().when(listUserRoleService).allocateListUserRole(any(ListUserRole.class)); // Ignore this method call
 
-        itemListService.shareItemList(ownerIdString, targetUserIdString, itemListIdString, RoleName.EDITOR);
+        itemListService.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR);
 
         // then
         verify(listUserRoleService).allocateListUserRole(any(ListUserRole.class));
@@ -91,22 +91,22 @@ class ItemListServiceTest {
                 .build();
 
         // given
-        when(userService.findById(newTargetUser.getId().toString())).thenReturn(newTargetUser);
+        when(userService.findById(newTargetUser.getId())).thenReturn(newTargetUser);
         when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.of(itemList));
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
 
         // then
-        assertThrows(UserNotListOwnerException.class, () -> itemListService.shareItemList(sharerUser.getId().toString(), newTargetUser.getId().toString(), itemListIdString, RoleName.EDITOR));
+        assertThrows(UserNotListOwnerException.class, () -> itemListService.shareItemList(itemListUUID, sharerUser.getId(), newTargetUser.getId(), RoleName.EDITOR));
     }
 
     @Test
     void shouldThrowExceptionWhenItemListNotFound() {
         // given
-        when(userService.findById(targetUserIdString)).thenReturn(targetUser);
+        when(userService.findById(targetUserUUID)).thenReturn(targetUser);
         when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.empty());
 
         // then
-        assertThrows(ItemListNotFoundException.class, () -> itemListService.shareItemList(ownerIdString, targetUserIdString, itemListIdString, RoleName.EDITOR));
+        assertThrows(ItemListNotFoundException.class, () -> itemListService.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR));
     }
 
     @Test
