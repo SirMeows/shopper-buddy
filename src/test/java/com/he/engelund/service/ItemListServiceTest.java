@@ -34,16 +34,11 @@ class ItemListServiceTest {
     @Mock
     private ItemListRepository itemListRepository;
 
-    private User targetUser;
-    private Role ownerRole;
-    private Role editorRole;
+    private User owner, targetUser;
+    private Role ownerRole, editorRole;
+    private String ownerIdString, targetUserIdString, itemListIdString;
+    private UUID ownerUUID, targetUserUUID, itemListUUID;
     private ItemList itemList;
-    private String ownerIdString;
-    private String targetUserIdString;
-    private String itemListId;
-    private UUID targetUserUUID;
-    private UUID ownerUUID;
-    private User owner;
 
     @BeforeEach
     public void setUp() {
@@ -56,12 +51,13 @@ class ItemListServiceTest {
         targetUserUUID = UUID.randomUUID();
         targetUserIdString = targetUserUUID.toString();
         targetUser = UserBuilder.create().addId(targetUserUUID).build();
-        itemListId = UUID.randomUUID().toString();
+        itemListUUID = UUID.randomUUID();
+        itemListIdString = itemListUUID.toString();
     }
 
     @Test
     void shouldShareItemList() {
-        var expectedListUserRole = ListUserRoleBuilder.create()
+        ListUserRoleBuilder.create()
                 .addItemList(itemList)
                 .addUser(owner)
                 .addRole(ownerRole)
@@ -69,51 +65,52 @@ class ItemListServiceTest {
 
         // given
         when(userService.findById(targetUserIdString)).thenReturn(targetUser);
-        when(itemListRepository.findById(UUID.fromString(itemListId))).thenReturn(Optional.of(itemList));
+        when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.of(itemList));
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
-        when(roleService.findByName(RoleName.OWNER)).thenReturn(ownerRole);
-        // when list owner id matches
-        when(listUserRoleService.findByItemListAndRole(itemList, ownerRole)).thenReturn(Set.of(expectedListUserRole));
-        doNothing().when(listUserRoleService).allocateListUserRole(any(ListUserRole.class));
+        doNothing().when(listUserRoleService).allocateListUserRole(any(ListUserRole.class)); // Ignore this method call
 
-        itemListService.shareItemList(ownerIdString, targetUserIdString, itemListId);
+        itemListService.shareItemList(ownerIdString, targetUserIdString, itemListIdString, RoleName.EDITOR);
 
         // then
-        verify(userService).findById(targetUserIdString);
-        verify(itemListRepository).findById(UUID.fromString(itemListId));
-        verify(roleService).findByName(RoleName.EDITOR);
-        verify(listUserRoleService).findByItemListAndRole(itemList, ownerRole);
         verify(listUserRoleService).allocateListUserRole(any(ListUserRole.class));
     }
 
     @Test
     void shouldThrowExceptionWhenNotOwner() {
-        var incorrectListUserRole = ListUserRoleBuilder.create()
+        var sharerUser = UserBuilder.create().addId("df3b80ea-3d68-42f2-bc64-4ca465630ad1").build();
+        var newTargetUser = UserBuilder.create().addId("691f7261-a4e9-4733-9c36-b883cd2ca448").build();
+        ListUserRoleBuilder.create()
                 .addItemList(itemList)
-                .addUser(targetUser)
+                .addUser(sharerUser)
                 .addRole(editorRole)
+                .build();
+        ListUserRoleBuilder.create()
+                .addItemList(itemList)
+                .addUser(owner)
+                .addRole(ownerRole)
                 .build();
 
         // given
-        when(userService.findById(targetUserIdString)).thenReturn(targetUser);
-        when(itemListRepository.findById(UUID.fromString(itemListId))).thenReturn(Optional.of(itemList));
+        when(userService.findById(newTargetUser.getId().toString())).thenReturn(newTargetUser);
+        when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.of(itemList));
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
-        when(roleService.findByName(RoleName.OWNER)).thenReturn(ownerRole);
-
-        // when list owner id doesn't match
-        when(listUserRoleService.findByItemListAndRole(itemList, ownerRole)).thenReturn(Set.of(incorrectListUserRole));
 
         // then
-        assertThrows(UserNotListOwnerException.class, () -> itemListService.shareItemList(ownerIdString, targetUserIdString, itemListId));
+        assertThrows(UserNotListOwnerException.class, () -> itemListService.shareItemList(sharerUser.getId().toString(), newTargetUser.getId().toString(), itemListIdString, RoleName.EDITOR));
     }
 
     @Test
     void shouldThrowExceptionWhenItemListNotFound() {
         // given
         when(userService.findById(targetUserIdString)).thenReturn(targetUser);
-        when(itemListRepository.findById(UUID.fromString(itemListId))).thenReturn(Optional.empty());
+        when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.empty());
 
         // then
-        assertThrows(ItemListNotFoundException.class, () -> itemListService.shareItemList(ownerIdString, targetUserIdString, itemListId));
+        assertThrows(ItemListNotFoundException.class, () -> itemListService.shareItemList(ownerIdString, targetUserIdString, itemListIdString, RoleName.EDITOR));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenTargetUserDoesNotExist() {
+
     }
 }

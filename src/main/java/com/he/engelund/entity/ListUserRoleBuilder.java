@@ -26,6 +26,7 @@ public class ListUserRoleBuilder {
 
     public ListUserRoleBuilder addItemList(ItemList itemList) {
         listUserRole.setItemList(itemList);
+        itemList.getListUserRoles().add(listUserRole);
         return this;
     }
 

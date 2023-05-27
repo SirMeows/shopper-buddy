@@ -25,6 +25,16 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder addId(String id) {
+        user.setId(UUID.fromString(id));
+        return this;
+    }
+
+    public UserBuilder addRandomId() {
+        user.setId(UUID.randomUUID());
+        return this;
+    }
+
     public UserBuilder addUsername(String username) {
         user.setUsername(username);
         return this;

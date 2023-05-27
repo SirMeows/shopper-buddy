@@ -54,49 +54,40 @@ public class ItemListService {
         itemListRepository.save(itemList);
     }
 
-    public void shareItemList(String ownerId, String targetUserId, String itemListId) {
-        var targetUser = userService.findById(targetUserId);
-        ItemList itemList = itemListRepository.findById(UUID.fromString(itemListId)).orElseThrow(() -> new ItemListNotFoundException(itemListId));
-        var editorRole = roleService.findByName(RoleName.EDITOR);
+    public void shareItemList(String sharerId, String targetUserId, String itemListId, RoleName roleName) {
 
-        // Check that the ownerId matches the owner of the itemListId
-        if(userOwnsTheList(ownerId, itemList)) {
+        if(roleName == RoleName.OWNER) {
+            throw new IllegalArgumentException();
+        }
+        var targetUser = userService.findById(targetUserId);
+        var itemList = itemListRepository.findById(UUID.fromString(itemListId)).orElseThrow(() -> new ItemListNotFoundException(itemListId));
+        var role = roleService.findByName(roleName);
+
+        if(userOwnsTheList(UUID.fromString(sharerId), itemList)) {
             var newListUserRole = ListUserRoleBuilder
                     .create()
                     .addUser(targetUser)
                     .addItemList(itemList)
-                    .addRole(editorRole)
+                    .addRole(role)
                     .build();
             listUserRoleService.allocateListUserRole(newListUserRole);
         }
         else {
-            throw new UserNotListOwnerException(ownerId);
+            throw new UserNotListOwnerException(sharerId);
         }
     }
-
-    private boolean userOwnsTheList(String userId, ItemList itemList) {
-        var ownerRole = roleService.findByName(RoleName.OWNER);
-        var listUserRoles = listUserRoleService.findByItemListAndRole(itemList, ownerRole);
-        var providedUserId = UUID.fromString(userId);
-        var actualOwnerId = findActualOwner(listUserRoles).getId();
-
-        if(providedUserId.equals(actualOwnerId)) {
-            return true;
-        }
-        return false;
-    }
-
-    private User findActualOwner(Set<ListUserRole> listUserRoles) {
-        List<User> owners = listUserRoles.stream()
+    private boolean userOwnsTheList(UUID userId, ItemList itemList) {
+        List<User> owners = itemList.getListUserRoles().stream()
+                .filter(listUserRole -> listUserRole.getRole().getRoleName() == RoleName.OWNER)
                 .map(ListUserRole::getUser)
                 .collect(Collectors.toList());
 
-        if (owners.size() > 1) {
-            throw new RuntimeException("Unexpected number of owners: " + owners.size());
-        } else if (owners.isEmpty()) {
-            throw new RuntimeException("No owners found");
+        if (owners.isEmpty()) {
+            throw new RuntimeException("No owner found for this list");
         }
-
-        return owners.get(0);
+        if (owners.size() > 1) {
+            throw new RuntimeException("More than one owner found for this list");
+        }
+        return owners.get(0).getId().equals(userId);
     }
 }

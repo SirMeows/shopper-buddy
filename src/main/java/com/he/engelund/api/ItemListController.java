@@ -4,6 +4,7 @@ import com.he.engelund.dto.ItemDto;
 import com.he.engelund.dto.ItemListDto;
 import com.he.engelund.entity.Item;
 import com.he.engelund.entity.ItemList;
+import com.he.engelund.entity.RoleName;
 import com.he.engelund.service.ItemListService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,7 @@ import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_LIST_DTO;
 @RequestMapping("/api/item-lists")
 public class ItemListController {
 
+    //TODO: Convert String IDs to UUID ASAP, already in Controllers, not Service
     private ItemListService itemListService;
 
     private ModelMapper modelMapper;
@@ -34,9 +36,11 @@ public class ItemListController {
         return modelMapper.map(itemLists, SET_TYPE_ITEM_LIST_DTO);
     }
 
-    @PostMapping("/share")
-    void shareItemList(@RequestParam String ownerId, @RequestParam String targetUserId, @RequestParam String itemListId) {
-        itemListService.shareItemList(ownerId, targetUserId, itemListId);
+    //TODO: ItemListID as first path variable, the rest in a dto
+    @PostMapping("/{listId}/share")
+    void shareItemList(@PathVariable String listId, @RequestParam String ownerId, @RequestParam String targetUserId, @RequestParam String targetUserRole) {
+        RoleName roleName = Enum.valueOf(RoleName.class, targetUserRole); // Will throw IllegalArgumentException if this is not a valid RoleName
+        itemListService.shareItemList(ownerId, targetUserId, listId, roleName);
     }
 
     @PostMapping("/create")
