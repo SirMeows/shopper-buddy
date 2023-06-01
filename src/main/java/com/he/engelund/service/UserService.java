@@ -1,9 +1,9 @@
 package com.he.engelund.service;
 
 import com.he.engelund.entity.ExternalAuthenticatedUser;
-import com.he.engelund.entity.GoogleOAuth2User;
+import com.he.engelund.dto.GoogleOAuth2User;
 import com.he.engelund.entity.User;
-import com.he.engelund.entity.UserBuilder;
+import com.he.engelund.entity.builder.UserBuilder;
 import com.he.engelund.exception.FailedToCreateNewUserException;
 import com.he.engelund.exception.UserNotFoundException;
 import com.he.engelund.repository.ExternalAuthenticatedUserRepository;

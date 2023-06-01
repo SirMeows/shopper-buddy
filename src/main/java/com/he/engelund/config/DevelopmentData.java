@@ -1,6 +1,7 @@
 package com.he.engelund.config;
 
 import com.he.engelund.entity.*;
+import com.he.engelund.entity.builder.*;
 import com.he.engelund.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.ApplicationArguments;

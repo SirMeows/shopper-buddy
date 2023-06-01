@@ -1,6 +1,7 @@
 package com.he.engelund.service;
 
 import com.he.engelund.entity.*;
+import com.he.engelund.entity.builder.ListUserRoleBuilder;
 import com.he.engelund.exception.ItemListNotFoundException;
 import com.he.engelund.exception.UserNotListOwnerException;
 import com.he.engelund.repository.*;
@@ -86,6 +87,7 @@ public class ItemListService {
             throw new RuntimeException("No owner found for this list");
         }
         if (owners.size() > 1) {
+            //TODO: Could allow more owners if needed for changing list owner functionality
             throw new RuntimeException("More than one owner found for this list");
         }
         return owners.get(0).getId().equals(userId);

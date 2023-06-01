@@ -1,4 +1,4 @@
-package com.he.engelund.entity;
+package com.he.engelund.dto;
 
 // Source: https://www.codejava.net/frameworks/spring-boot/oauth2-login-with-google-example#:~:text=package%20net.codejava%3B-,import%20java.util.Collection%3B,%7D,-Here%2C%20this%20class
 
@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Setter
-public class GoogleOAuth2User implements OAuth2User {
+public class GoogleOAuth2User implements OAuth2User { // Convenience Class for getting information from Google user
 
     private OAuth2User oauth2User;
 

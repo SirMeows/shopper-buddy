@@ -1,5 +1,6 @@
-package com.he.engelund.entity;
+package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.Tag;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

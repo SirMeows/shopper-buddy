@@ -1,6 +1,10 @@
 package com.he.engelund.service;
 
 import com.he.engelund.entity.*;
+import com.he.engelund.entity.builder.ItemListBuilder;
+import com.he.engelund.entity.builder.ListUserRoleBuilder;
+import com.he.engelund.entity.builder.RoleBuilder;
+import com.he.engelund.entity.builder.UserBuilder;
 import com.he.engelund.exception.ItemListNotFoundException;
 import com.he.engelund.exception.UserNotFoundException;
 import com.he.engelund.exception.UserNotListOwnerException;
@@ -12,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;

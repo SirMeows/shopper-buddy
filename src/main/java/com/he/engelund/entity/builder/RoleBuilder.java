@@ -1,5 +1,7 @@
-package com.he.engelund.entity;
+package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.Role;
+import com.he.engelund.entity.RoleName;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

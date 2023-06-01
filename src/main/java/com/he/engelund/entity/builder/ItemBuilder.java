@@ -1,8 +1,10 @@
-package com.he.engelund.entity;
+package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.Item;
 import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.UUID;
+
 
 @NoArgsConstructor
 public class ItemBuilder {

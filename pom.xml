@@ -16,6 +16,12 @@
     </properties>
 
     <dependencies>
+        <!-- API documentation -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -156,6 +162,7 @@
             <version>6.0.0</version>
             <scope>provided</scope>
         </dependency>
+
 
     </dependencies>
 

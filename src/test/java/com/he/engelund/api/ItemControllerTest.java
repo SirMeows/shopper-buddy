@@ -2,7 +2,7 @@ package com.he.engelund.api;
 
 import com.he.engelund.dto.ItemDto;
 import com.he.engelund.entity.Item;
-import com.he.engelund.entity.ItemBuilder;
+import com.he.engelund.entity.builder.ItemBuilder;
 import com.he.engelund.service.ItemService;
 import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_DTO;
 import org.junit.jupiter.api.BeforeEach;

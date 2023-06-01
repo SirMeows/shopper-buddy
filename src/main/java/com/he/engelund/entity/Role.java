@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -22,5 +20,4 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private RoleName roleName;
-
 }

@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
         return new HashSet<>(findAll());
     }
 
-    Optional<User> findById(UUID uuid);
+    //Optional<User> findById(UUID uuid);
 
     User getUserByExternalAuthenticatedUserId(String externalId);
 

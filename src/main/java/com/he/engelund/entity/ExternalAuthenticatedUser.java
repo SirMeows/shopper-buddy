@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
-
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,13 +13,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-public class ExternalAuthenticatedUser {
-    //The id is a String because input data type is unknown
+public class ExternalAuthenticatedUser { // Stores relationship between Google user and User entity
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    //The id is a String because input data type is unknown
     @Column(nullable = false, unique = true)
     private String providedUserId;
 
@@ -40,7 +39,4 @@ public class ExternalAuthenticatedUser {
 
     @Column
     private String locale;
-/*
-    @Column
-    private boolean isVerifiedEmail;*/
 }

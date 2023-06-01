@@ -2,7 +2,7 @@ package com.he.engelund.service;
 
 // Source: https://www.codejava.net/frameworks/spring-boot/oauth2-login-with-google-example#:~:text=package%20net.codejava%3B-,import%20org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService%3B,%7D,-Here%2C%20we%20override
 
-import com.he.engelund.entity.GoogleOAuth2User;
+import com.he.engelund.dto.GoogleOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -21,9 +21,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
         var oAuth2User =  super.loadUser(userRequest);
         var googleOAuth2User = new GoogleOAuth2User(oAuth2User);
         var googleOAuth2UserId = googleOAuth2User.getExternalUserId();
-        var isRegistered= userService.isUserRegistered(googleOAuth2UserId);
+        var isRegistered = userService.isUserRegistered(googleOAuth2UserId);
 
-        //TODO: Add check for whether user with this email has already been registered
         if(!isRegistered) {
            userService.registerUser(googleOAuth2UserId, googleOAuth2User.getEmail());
         } else {
@@ -33,8 +32,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
         // Adds internalUserId to attribute map
         var internalUserId = userService.getInternalUserIdAsStringByExternalUserId(googleOAuth2UserId);
         googleOAuth2User.addInternalUserId(internalUserId);
-
-        // optionally add different granted authorities (getAuthorities)
 
         return googleOAuth2User;
     }

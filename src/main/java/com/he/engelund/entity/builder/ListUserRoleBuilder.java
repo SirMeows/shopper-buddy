@@ -1,5 +1,9 @@
-package com.he.engelund.entity;
+package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.ItemList;
+import com.he.engelund.entity.ListUserRole;
+import com.he.engelund.entity.Role;
+import com.he.engelund.entity.User;
 import lombok.NoArgsConstructor;
 import java.util.UUID;
 
