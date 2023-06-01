@@ -2,6 +2,7 @@ package com.he.engelund.service;
 
 import com.he.engelund.entity.*;
 import com.he.engelund.exception.ItemListNotFoundException;
+import com.he.engelund.exception.UserNotFoundException;
 import com.he.engelund.exception.UserNotListOwnerException;
 import com.he.engelund.repository.ItemListRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -111,6 +112,11 @@ class ItemListServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTargetUserDoesNotExist() {
+        // given
+        var incorrectUserId = UUID.randomUUID();
+        when(userService.findById(incorrectUserId)).thenThrow(new UserNotFoundException(incorrectUserId));
 
+        // then
+        assertThrows(UserNotFoundException.class, () -> itemListService.shareItemList(itemListUUID, ownerUUID, incorrectUserId, RoleName.EDITOR));
     }
 }
