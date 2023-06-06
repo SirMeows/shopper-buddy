@@ -14,6 +14,4 @@ public interface ItemListRepository extends JpaRepository<ItemList, UUID> {
     }
 
     List<ItemList> findAllByOrderByLastModifiedDesc();
-
-    //Optional<ItemList> findById(UUID uuid);
 }

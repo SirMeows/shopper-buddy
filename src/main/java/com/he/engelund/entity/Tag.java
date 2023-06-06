@@ -20,8 +20,5 @@ public class Tag {
     private UUID id;
 
     private String name;
-
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
-    private Set<Item> items;
 }
 

@@ -3,7 +3,7 @@ package com.he.engelund.api;
 import com.he.engelund.dto.ItemDto;
 import com.he.engelund.entity.Item;
 import com.he.engelund.entity.builder.ItemBuilder;
-import com.he.engelund.service.ItemService;
+import com.he.engelund.service.ItemServiceImpl;
 import static com.he.engelund.config.ModelMapperConfig.SET_TYPE_ITEM_DTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class ItemControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ItemService itemService;
+    private ItemServiceImpl itemService;
 
     @MockBean
     private ModelMapper modelMapper;

@@ -21,13 +21,13 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class ItemListServiceTest {
+class ItemListServiceImplTest {
 
     @InjectMocks
-    private ItemListService itemListService;
+    private ItemListServiceImpl itemListServiceImpl;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private RoleService roleService;
@@ -73,7 +73,7 @@ class ItemListServiceTest {
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
         doNothing().when(listUserRoleService).allocateListUserRole(any(ListUserRole.class)); // Ignore this method call
 
-        itemListService.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR);
+        itemListServiceImpl.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR);
 
         // then
         verify(listUserRoleService).allocateListUserRole(any(ListUserRole.class));
@@ -100,7 +100,7 @@ class ItemListServiceTest {
         when(roleService.findByName(RoleName.EDITOR)).thenReturn(editorRole);
 
         // then
-        assertThrows(UserNotListOwnerException.class, () -> itemListService.shareItemList(itemListUUID, sharerUser.getId(), newTargetUser.getId(), RoleName.EDITOR));
+        assertThrows(UserNotListOwnerException.class, () -> itemListServiceImpl.shareItemList(itemListUUID, sharerUser.getId(), newTargetUser.getId(), RoleName.EDITOR));
     }
 
     @Test
@@ -110,7 +110,7 @@ class ItemListServiceTest {
         when(itemListRepository.findById(itemListUUID)).thenReturn(Optional.empty());
 
         // then
-        assertThrows(ItemListNotFoundException.class, () -> itemListService.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR));
+        assertThrows(ItemListNotFoundException.class, () -> itemListServiceImpl.shareItemList(itemListUUID, ownerUUID, targetUserUUID, RoleName.EDITOR));
     }
 
     @Test
@@ -120,6 +120,6 @@ class ItemListServiceTest {
         when(userService.findById(incorrectUserId)).thenThrow(new UserNotFoundException(incorrectUserId));
 
         // then
-        assertThrows(UserNotFoundException.class, () -> itemListService.shareItemList(itemListUUID, ownerUUID, incorrectUserId, RoleName.EDITOR));
+        assertThrows(UserNotFoundException.class, () -> itemListServiceImpl.shareItemList(itemListUUID, ownerUUID, incorrectUserId, RoleName.EDITOR));
     }
 }

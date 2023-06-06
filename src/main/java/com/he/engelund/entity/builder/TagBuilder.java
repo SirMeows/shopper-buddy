@@ -1,7 +1,10 @@
 package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.Item;
 import com.he.engelund.entity.Tag;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @NoArgsConstructor
 public class TagBuilder {
@@ -20,7 +23,7 @@ public class TagBuilder {
     }
 
     public TagBuilder addName(String name) {
-        tag.setName(name);
+        tag.setName(name.toLowerCase());
         return this;
     }
 

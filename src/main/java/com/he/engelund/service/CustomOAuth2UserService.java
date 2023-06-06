@@ -14,7 +14,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
 
     // Every time an authenticated user enters one of our pages it gets loaded and checked against saved user
     // Spring needs the modified OAuth2User that it gets through the loadUser method
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

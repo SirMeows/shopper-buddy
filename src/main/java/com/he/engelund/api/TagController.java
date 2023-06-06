@@ -2,7 +2,7 @@ package com.he.engelund.api;
 
 import com.he.engelund.dto.TagDto;
 import com.he.engelund.entity.Tag;
-import com.he.engelund.service.TagService;
+import com.he.engelund.service.interfaces.TagService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;

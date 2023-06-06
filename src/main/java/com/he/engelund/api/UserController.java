@@ -1,7 +1,8 @@
 package com.he.engelund.api;
 
 import com.he.engelund.dto.UserDto;
-import com.he.engelund.service.UserService;
+import com.he.engelund.service.UserServiceImpl;
+import com.he.engelund.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.CrossOrigin;

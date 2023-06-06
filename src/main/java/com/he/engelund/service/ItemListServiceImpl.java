@@ -5,6 +5,7 @@ import com.he.engelund.entity.builder.ListUserRoleBuilder;
 import com.he.engelund.exception.ItemListNotFoundException;
 import com.he.engelund.exception.UserNotListOwnerException;
 import com.he.engelund.repository.*;
+import com.he.engelund.service.interfaces.ItemListService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,47 +15,69 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-public class ItemListService {
+public class ItemListServiceImpl implements ItemListService {
 
     private ItemListRepository itemListRepository;
 
-    private ItemService itemService;
+    private ItemServiceImpl itemService;
 
-    private UserService userService;
+    private UserServiceImpl userService;
 
     private RoleService roleService;
 
     private ListUserRoleService listUserRoleService;
 
+    @Override
     public List<ItemList> getItemListsOrderedByLastModified() {
         return itemListRepository.findAllByOrderByLastModifiedDesc();
     }
 
+    @Override
     public Set<ItemList> getItemLists() {
         return itemListRepository.findAllSet();
     }
 
+    //TODO: Get itemLists by name (name)
+
+    @Override
     public ItemList addItemList(ItemList itemList) {
         return itemListRepository.save(itemList);
     }
 
-    public void addItemToItemList(UUID listId, Item item) {
-        var itemList = itemListRepository.getReferenceById(listId);
-        addToList(itemList, item);
+    @Override
+    public void deleteItemList(UUID id) {
+        itemListRepository.deleteById(id);
     }
 
-    public void addItemToItemList(UUID listId, UUID itemId) {
-        var itemList = itemListRepository.getReferenceById(listId);
-        var item = itemService.getItemById(itemId);
-        addToList(itemList, item);
+    @Override
+    public ItemList editItemList(UUID id, ItemList itemList) {
+        var savedItemList = itemListRepository.findById(id).orElseThrow(() -> new ItemListNotFoundException(id));
+        if(!itemList.equals(savedItemList)) {
+            return itemListRepository.save(itemList);
+        }
+        return savedItemList; // Returning original saved entity to keep lastEdited stamp unaltered
     }
 
-    private void addToList(ItemList itemList, Item item) {
+    @Override
+    public ItemList addItemToItemList(UUID listId, Item item) {
+        var itemList = itemListRepository.getReferenceById(listId);
+        return addItemToItemList(itemList, item);
+    }
+
+    @Override
+    public ItemList addItemToItemList(UUID listId, UUID itemId) {
+        var itemList = itemListRepository.getReferenceById(listId); //TODO:Change to findById() because it's used immediately (no need for lazy loading)
+        var item = itemService.findById(itemId);
+        return addItemToItemList(itemList, item);
+    }
+
+    private ItemList addItemToItemList(ItemList itemList, Item item) {
         var items = itemList.getItems();
         items.add(item);
-        itemListRepository.save(itemList);
+        return itemListRepository.save(itemList);
     }
 
+    @Override
     public void shareItemList(UUID itemListId, UUID sharerId, UUID targetUserId, RoleName roleName) {
         //TODO: Consider whether more than one owner should be allowed in order to change ownership
         if(roleName == RoleName.OWNER) {
