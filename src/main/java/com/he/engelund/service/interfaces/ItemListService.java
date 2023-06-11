@@ -13,6 +13,8 @@ public interface ItemListService {
 
     Set<ItemList> getItemLists();
 
+    ItemList getItemListById(UUID listId);
+
     ItemList addItemList(ItemList itemList);
 
     ItemList addItemToItemList(UUID listId, Item item);
@@ -22,6 +24,8 @@ public interface ItemListService {
     void shareItemList(UUID itemListId, UUID sharerId, UUID targetUserId, RoleName roleName);
 
     ItemList editItemList(UUID uuid, ItemList itemListToEdit);
+
+    Set<Item> getItemsByItemList(UUID id);
 
     void deleteItemList(UUID uuid);
 }

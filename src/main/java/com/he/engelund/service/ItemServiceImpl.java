@@ -1,12 +1,10 @@
 package com.he.engelund.service;
 
 import com.he.engelund.entity.Item;
-import com.he.engelund.entity.Tag;
-import com.he.engelund.entity.builder.TagBuilder;
 import com.he.engelund.exception.ItemNotFoundException;
 import com.he.engelund.repository.ItemRepository;
-import com.he.engelund.repository.TagRepository;
 import com.he.engelund.service.interfaces.ItemService;
+import com.he.engelund.service.interfaces.TagService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,7 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemRepository itemRepository;
 
-    private TagRepository tagRepository;
+    private TagService tagService;
 
     @Override
     public Set<Item> getItems() {
@@ -53,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Item addTagToItem(UUID id, String name) {
         var savedItem = itemRepository.findById(id).orElseThrow(() -> new ItemNotFoundException(id));
-        var tag = tagRepository.findByName(name).orElse(TagBuilder.create().addName(name).build());
+        var tag = tagService.findByName(name);// TODO: Make sure that this now works as intended
         savedItem.getTags().add(tag);
         return itemRepository.save(savedItem);
     }

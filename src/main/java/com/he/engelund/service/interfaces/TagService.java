@@ -10,4 +10,6 @@ public interface TagService {
     Set<Tag> getTags();
 
     Tag addTag(Tag tag);
+
+    Tag findByName(String name);
 }

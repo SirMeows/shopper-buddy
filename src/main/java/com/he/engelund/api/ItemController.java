@@ -54,11 +54,9 @@ public class ItemController {
 
     private ItemDto itemToDto(Item item) {
         return modelMapper.map(item, ItemDto.class);
-    }
+    }//TODO: Add to ModelMapperConfig instead, same as SETs
 
     private Item dtoToItem(ItemDto itemDto) {
         return modelMapper.map(itemDto, Item.class);
     }
-
-
 }

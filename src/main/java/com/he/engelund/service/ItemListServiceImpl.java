@@ -8,6 +8,8 @@ import com.he.engelund.repository.*;
 import com.he.engelund.service.interfaces.ItemListService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.model.IModel;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -40,6 +42,11 @@ public class ItemListServiceImpl implements ItemListService {
     //TODO: Get itemLists by name (name)
 
     @Override
+    public ItemList getItemListById(UUID id) {
+        return itemListRepository.findById(id).orElseThrow(() -> new ItemListNotFoundException());
+    }
+
+    @Override
     public ItemList addItemList(ItemList itemList) {
         return itemListRepository.save(itemList);
     }
@@ -56,6 +63,12 @@ public class ItemListServiceImpl implements ItemListService {
             return itemListRepository.save(itemList);
         }
         return savedItemList; // Returning original saved entity to keep lastEdited stamp unaltered
+    }
+
+    @Override
+    public Set<Item> getItemsByItemList(UUID id) {
+        var savedList = itemListRepository.findById(id).orElseThrow(() -> new ItemListNotFoundException());
+        return savedList.getItems();
     }
 
     @Override

@@ -63,6 +63,12 @@ public class ItemListController {
         itemListService.addItemToItemList(UUID.fromString(id), UUID.fromString(itemId));
     }
 
+    @GetMapping("/{id}/items-by-list")
+    ItemDto itemsByItemList(@PathVariable String id) {
+        var items = itemListService.getItemsByItemList(UUID.fromString(id));
+        return modelMapper.map(items, ItemDto.class);
+    }
+
     @PutMapping("/{id}/edit")
     ItemListDto edit(@PathVariable String id, @RequestBody ItemListDto body) {
         var itemListToEdit = dtoToItemList(body);

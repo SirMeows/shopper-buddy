@@ -1,6 +1,7 @@
 package com.he.engelund.repository;
 
 import com.he.engelund.entity.Item;
+import com.he.engelund.entity.ItemList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.HashSet;
