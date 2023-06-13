@@ -8,7 +8,7 @@ import com.he.engelund.repository.*;
 import com.he.engelund.service.interfaces.ItemListService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.model.IModel;
+
 
 import java.util.List;
 import java.util.Set;
