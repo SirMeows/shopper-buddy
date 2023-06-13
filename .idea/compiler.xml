@@ -13,7 +13,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="shopper-buddy" options="-parameters" />
+      <module name="shopper-buddy" options="" />
     </option>
   </component>
 </project>
