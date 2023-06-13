@@ -4,16 +4,12 @@ import com.he.engelund.entity.Item;
 import com.he.engelund.entity.ItemList;
 import com.he.engelund.entity.RoleName;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 @Service
 public interface ItemListService {
-    List<ItemList> getItemListsOrderedByLastModified();
 
     Set<ItemList> getItemLists();
-
-    ItemList getItemListById(UUID listId);
 
     ItemList addItemList(ItemList itemList);
 

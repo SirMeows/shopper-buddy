@@ -6,7 +6,6 @@ import com.he.engelund.dto.TagDto;
 import com.he.engelund.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.modelmapper.internal.bytebuddy.description.method.MethodDescription;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import java.lang.reflect.Type;

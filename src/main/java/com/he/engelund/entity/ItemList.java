@@ -23,7 +23,7 @@ public class ItemList {
 
     private final LocalDateTime created = LocalDateTime.now();
 
-    private LocalDateTime lastModified; //TODO: Sort lists so that the last modified list is displayed at the top
+    private LocalDateTime lastModified;
 
     @ManyToMany(mappedBy = "itemLists", fetch = FetchType.LAZY)
     private Set<Item> items;

@@ -12,6 +12,4 @@ public interface ItemListRepository extends JpaRepository<ItemList, UUID> {
     default Set<ItemList> findAllSet() {
         return new HashSet<>(findAll());
     }
-
-    List<ItemList> findAllByOrderByLastModifiedDesc();
 }

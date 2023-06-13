@@ -30,20 +30,8 @@ public class ItemListServiceImpl implements ItemListService {
     private ListUserRoleService listUserRoleService;
 
     @Override
-    public List<ItemList> getItemListsOrderedByLastModified() {
-        return itemListRepository.findAllByOrderByLastModifiedDesc();
-    }
-
-    @Override
     public Set<ItemList> getItemLists() {
         return itemListRepository.findAllSet();
-    }
-
-    //TODO: Get itemLists by name (name)
-
-    @Override
-    public ItemList getItemListById(UUID id) {
-        return itemListRepository.findById(id).orElseThrow(() -> new ItemListNotFoundException());
     }
 
     @Override

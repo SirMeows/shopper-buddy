@@ -16,4 +16,6 @@ public class ItemListDto {
     private UUID id;
 
     private String name;
+
+    //TODO: Add lastModified so ItemLists can be displayed ordered by last modified datetime (sort on frontend side)
 }
