@@ -29,6 +29,8 @@
 
     <!-- Custom logger configurations -->
     <logger name="org.springframework.security" level="DEBUG"/>
+    <logger name="com.google.auth" level="DEBUG"/>
+    <logger name="com.google.api-client" level="DEBUG"/>
     <!-- <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/> -->
     <!-- <logger name="org.hibernate.SQL" level="DEBUG"/> -->
     <!-- <logger name="org.springframework.data" level="TRACE"/> -->
