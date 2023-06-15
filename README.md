@@ -1,5 +1,5 @@
 # shopper-buddy
-KEA final project - application for managin grocery shopping and product information.
+KEA final project - application for managin product information and shopping lists.
 
 Frontend application: https://github.com/SirMeows/shopper-buddy-app
 
