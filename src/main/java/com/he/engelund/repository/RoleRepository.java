@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     Optional<Role> findByRoleName(RoleName roleName);
+    //TODO: Remove redundant interface stub. Repository already returns Optionals, and this method can be called without creating a custom method.
 }
