@@ -61,13 +61,13 @@ public class ItemListServiceImpl implements ItemListService {
 
     @Override
     public ItemList addItemToItemList(UUID listId, Item item) {
-        var itemList = itemListRepository.getReferenceById(listId);
+        var itemList = itemListRepository.getById(listId);
         return addItemToItemList(itemList, item);
     }
 
     @Override
     public ItemList addItemToItemList(UUID listId, UUID itemId) {
-        var itemList = itemListRepository.getReferenceById(listId); //TODO:Change to findById() because it's used immediately (no need for lazy loading)
+        var itemList = itemListRepository.getById(listId); //TODO:Change to findById() because it's used immediately (no need for lazy loading)
         var item = itemService.findById(itemId);
         return addItemToItemList(itemList, item);
     }

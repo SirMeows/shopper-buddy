@@ -10,7 +10,7 @@ import com.he.engelund.service.interfaces.ItemListService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+
 import java.util.Set;
 import java.util.UUID;
 
@@ -56,9 +56,12 @@ public class ItemListController {
     }
 
     @PostMapping("/{id}/add-item/{itemId}")
-    Set<ItemListDto> addExistingItemToItemList(@PathVariable String id, @PathVariable String itemId) {
+    ItemListDto addExistingItemToItemList(@PathVariable String id, @PathVariable String itemId) {
         var itemList = itemListService.addItemToItemList(UUID.fromString(id), UUID.fromString(itemId));
-        return modelMapper.map(itemList, SET_TYPE_ITEM_LIST_DTO);
+        var res = modelMapper.map(itemList, ItemListDto.class);
+
+
+        return res;
     }
 
     @GetMapping("/{id}/items-by-list")

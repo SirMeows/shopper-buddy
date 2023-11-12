@@ -8,8 +8,11 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 @AllArgsConstructor
@@ -18,22 +21,22 @@ import java.util.stream.IntStream;
 public class DevelopmentData implements ApplicationRunner {
 
     private ItemRepository iRepository;
-    private List<Item> items;
+    private Set<Item> items;
 
     private ItemListRepository iListRepository;
-    private List<ItemList> itemLists;
+    private Set<ItemList> itemLists;
 
     private TagRepository tagRepository;
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     private UserRepository userRepository;
-    private List<User> users;
+    private Set<User> users;
 
     private RoleRepository roleRepository;
-    private List<Role> roles;
+    private Set<Role> roles;
 
     private ListUserRoleRepository listUserRoleRepo;
-    private List<ListUserRole> listUserRoles;
+    private Set<ListUserRole> listUserRoles;
 
     private void makeItems() {
         var muesli = ItemBuilder
@@ -51,7 +54,7 @@ public class DevelopmentData implements ApplicationRunner {
                 .addName("orange juice")
                 .build();
 
-        items.addAll(List.of(muesli, bread, juice));
+        items.addAll(Set.of(muesli, bread, juice));
         iRepository.saveAll(items);
     }
 
@@ -59,6 +62,7 @@ public class DevelopmentData implements ApplicationRunner {
         var groceries = ItemListBuilder
                 .create()
                 .addName("groceries")
+                .addItems(items)
                 .build();
 
         var gifts = ItemListBuilder
@@ -71,7 +75,7 @@ public class DevelopmentData implements ApplicationRunner {
                 .addName("hobbyItems")
                 .build();
 
-        itemLists.addAll(List.of(groceries, gifts, hobbyItems));
+        itemLists.addAll(Set.of(groceries, gifts, hobbyItems));
         iListRepository.saveAll(itemLists);
     }
 
@@ -81,7 +85,7 @@ public class DevelopmentData implements ApplicationRunner {
         var hFavorite = TagBuilder.create().addName("He likes").build();
         var wFavorite = TagBuilder.create().addName("Wouter likes").build();
 
-        tags.addAll(List.of(bakeryProducts, drinks, hFavorite, wFavorite));
+        tags.addAll(Set.of(bakeryProducts, drinks, hFavorite, wFavorite));
         tagRepository.saveAll(tags);
     }
 
@@ -98,7 +102,7 @@ public class DevelopmentData implements ApplicationRunner {
                 .addEmail("wp-email@google.com")
                 .build();
 
-        users.addAll(List.of(he, wp));
+        users.addAll(Set.of(he, wp));
         userRepository.saveAll(users);
     }
 
@@ -123,9 +127,9 @@ public class DevelopmentData implements ApplicationRunner {
 
     private ListUserRole makeListUserRole() {
         var random = new Random();
-        var randItemList = itemLists.get(random.nextInt(itemLists.size()));
-        var randUser = users.get(random.nextInt(users.size()));
-        var randRole = roles.get(random.nextInt(roles.size()));
+        var randItemList = new ArrayList<>(itemLists).get(random.nextInt(itemLists.size()));
+        var randUser = new ArrayList<>(users).get(random.nextInt(users.size()));
+        var randRole = new ArrayList<>(roles).get(random.nextInt(roles.size()));
 
         var newListUserRole = ListUserRoleBuilder
                 .create()
