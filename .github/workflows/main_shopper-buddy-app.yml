@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,25 +24,33 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+      - name: Azure Login
+        uses: azure/login@v1
         with:
-          name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Login to Azure Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_CLIENT_ID  }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET  }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }} .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }}
+        env:
+          JAR_FILE: target/*.jar # Set the path to your JAR file
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-and-push
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: java-app
 
+    steps:
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -50,4 +58,4 @@ jobs:
           app-name: 'shopper-buddy-app'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24C9076637B54339B3E3EB315958DAD0 }}
-          package: '*.jar'
+          images: ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }}
