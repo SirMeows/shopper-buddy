@@ -8,7 +8,7 @@ EXPOSE 8080
 WORKDIR /app
 
 # Copy the jar file into the container
-ARG JAR_FILE=target/shopper-buddy.jar
+ARG JAR_FILE=target/shopper-buddy-1.0-SNAPSHOT.jar
 COPY ${JAR_FILE} shopper-buddy.jar
 
 # Run the jar file
