@@ -1,5 +1,5 @@
 # Use an official Java 17 runtime as a parent image
-FROM openjdk:17-jre-slim
+FROM eclipse-temurin:17-jre-ubi9-minimal
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
