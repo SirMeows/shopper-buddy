@@ -12,9 +12,15 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out git repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }} # anothrNick: required for better experience using pre-releases
+          fetch-depth: '0' # anothrNick: to be sure you retrieve all commits to look for the semver commit message.
 
       - name: Set up Java version
         uses: actions/setup-java@v1
@@ -36,12 +42,26 @@ jobs:
           username: ${{ secrets.AZURE_CLIENT_ID  }}
           password: ${{ secrets.AZURE_CLIENT_SECRET  }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }} .
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }}
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}:latest
         env:
           JAR_FILE: target/*.jar # Set the path to your JAR file
+
+      # If a commit message contains #major, #minor, #patch, or #none, it will trigger the respective version bump.
+      - name: Bump version and push tag
+        id: create_tag
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          RELEASE_BRANCHES: main
+
+      - name: Tag and Push Docker images
+        run: |
+          docker tag ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}:latest ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}:${{ steps.create_tag.outputs.new_tag }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}:${{ steps.create_tag.outputs.new_tag }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,11 +71,31 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+      - name: 'Get AKS credentials'
+        uses: azure/aks-set-context@v3
         with:
-          app-name: 'shopper-buddy-app'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_24C9076637B54339B3E3EB315958DAD0 }}
-          images: ${{ secrets.ACR_LOGIN_SERVER }}/shopper-buddy-app:${{ github.sha }}
+          cluster-name: ${{ vars.CLUSTER_NAME }}
+          resource-group: ${{ vars.CLUSTER_RESOURCE_GROUP }}
+
+      - uses: microsoft/variable-substitution@v1
+        with:
+          files: 'helm/charts/snake-backend/Chart.yaml, helm/charts/snake-backend/values.yaml'
+        env:
+          subdomains: ${{ secrets.DOMAINS }}
+          #subdomains: "example.org,example.com,example.eu"
+          name: ${{ vars.APPLICATION_NAME }}
+          description: ${{ vars.APP_DESCRIPTION}}
+          appVersion: ${{ steps.create_tag.outputs.new_tag }}
+          image.repository: ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}
+          image.tag: ${{ steps.create_tag.outputs.new_tag }}
+
+      # Deploying the application
+      - name: 'Deploy to AKS'
+        run: |
+          kubectl create namespace snake-backend --dry-run=client -o yaml | kubectl apply -f -
+          helm upgrade --install snake-backend ./helm/charts/snake-backend \
+              --set image.tag="${{ steps.create_tag.outputs.new_tag }}" \
+              --namespace snake-backend \
+              --wait \
+              --timeout 600s \
+              --atomic
