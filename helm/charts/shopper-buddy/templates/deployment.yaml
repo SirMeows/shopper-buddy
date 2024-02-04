@@ -44,10 +44,10 @@ spec:
             - name: GOOGLE_OAUTH2_CLIENT_ID_B64ENC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-googleClientSecrets
+                  name: {{ .Release.Name }}-google-client-secrets
                   key: GOOGLE_OAUTH2_CLIENT_ID_B64ENC
             - name: GOOGLE_OAUTH2_CLIENT_SECRET_B64ENC
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-googleClientSecrets
+                  name: {{ .Release.Name }}-google-client-secrets
                   key: GOOGLE_OAUTH2_CLIENT_SECRET_B64ENC
