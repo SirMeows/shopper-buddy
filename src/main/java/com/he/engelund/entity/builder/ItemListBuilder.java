@@ -1,8 +1,11 @@
 package com.he.engelund.entity.builder;
 
+import com.he.engelund.entity.Item;
 import com.he.engelund.entity.ItemList;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -28,6 +31,11 @@ public class ItemListBuilder {
 
     public ItemListBuilder addName(String name) {
         itemList.setName(name);
+        return this;
+    }
+
+    public ItemListBuilder addItems(Set<Item> items) {
+        itemList.setItems(items);
         return this;
     }
 

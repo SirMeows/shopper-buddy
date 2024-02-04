@@ -10,7 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
 @Entity
 public class Item {
 
