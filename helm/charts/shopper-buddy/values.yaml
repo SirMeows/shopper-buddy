@@ -18,3 +18,7 @@ subdomains: substituted-from-pipeline
 
 database:
   appOwnerSecretName: "shopper-buddy-prod-owner-connection"
+
+google:
+  googleClientID: substituted-from-pipeline
+  googleClientSecret: substituted-from-pipeline

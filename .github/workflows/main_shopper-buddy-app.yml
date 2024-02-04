@@ -117,6 +117,9 @@ jobs:
           appVersion: ${{ env.LATEST_TAG }}
           image.repository: ${{ secrets.ACR_LOGIN_SERVER }}/${{ vars.APPLICATION_NAME }}
           image.tag: ${{ env.LATEST_TAG }}
+          google.googleClientID: ${{ secrets.GOOGLE_OAUTH2_CLIENT_ID }}
+          google.googleClientSecret: ${{ secrets.GOOGLE_OAUTH2_CLIENT_SECRET }}
+
 
       # Deploying the application
       - name: 'Deploy to AKS'

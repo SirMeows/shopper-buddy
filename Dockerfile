@@ -11,5 +11,9 @@ WORKDIR /app
 # Copy the jar file into the container
 COPY ${JAR_FILE} ./shopper-buddy.jar
 
+# Copy start script
+COPY start-shopper-buddy.sh /app/start-shopper-buddy.sh
+RUN chmod +x /app/start-shopper-buddy.sh
+
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/shopper-buddy.jar"]
+ENTRYPOINT ["/app/start-shopper-buddy.sh"]
