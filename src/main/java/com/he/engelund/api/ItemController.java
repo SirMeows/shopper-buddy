@@ -4,6 +4,7 @@ import com.he.engelund.dto.ItemDto;
 import com.he.engelund.entity.Item;
 import com.he.engelund.service.interfaces.ItemService;
 import lombok.AllArgsConstructor;
+import org.apache.coyote.Request;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import java.util.Set;
@@ -35,7 +36,8 @@ public class ItemController {
     }
 
     @PostMapping("/{id}/add-tag")
-    ItemDto addTagToItem(@PathVariable String id, @PathVariable String tag) {
+    ItemDto addTagToItem(@PathVariable String id, @RequestBody ItemDto body) {
+        var tag = ""; //TODO: Get tag from response (itemDto currently doesn't contain tags)
         var savedItem = itemService.addTagToItem(UUID.fromString(id), tag);
         return itemToDto(savedItem);
     }

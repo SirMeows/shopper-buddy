@@ -41,3 +41,13 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.appOwnerSecretName }}
                   key: DATABASE_SCHEMA
+            - name: GOOGLE_OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.googleKubernetesSecretName }}
+                  key: GOOGLE_OAUTH2_CLIENT_SECRET
+            - name: GOOGLE_OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.googleKubernetesSecretName }}
+                  key: GOOGLE_OAUTH2_CLIENT_ID

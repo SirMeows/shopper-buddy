@@ -18,3 +18,7 @@ subdomains: substituted-from-pipeline
 
 database:
   appOwnerSecretName: "shopper-buddy-prod-owner-connection"
+
+googleKubernetesSecretName: {{ .Release.Name }}-google-oauth2
+google_oauth2_client_id: substituted-by-pipeline
+google_oauth2_secret: substituted-by-pipeline
