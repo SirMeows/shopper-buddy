@@ -29,14 +29,14 @@
 
     <!-- Custom logger configurations -->
     <logger name="org.springframework.security" level="INFO"/>
-    <logger name="com.google.auth" level="INFO"/>
-    <logger name="com.google.api-client" level="INFO"/>
+    <logger name="com.google.auth" level="TRACE"/>
+    <logger name="com.google.api-client" level="TRACE"/>
     <logger name="org.springframework.boot.autoconfigure" level="INFO"/>
     <logger name="org.springframework.web.filter" level="INFO"/>
 
     <!-- <logger name="org.hibernate.tool.hbm2ddl" level="DEBUG"/> -->
     <!-- <logger name="org.hibernate.SQL" level="DEBUG"/> -->
-    <logger name="org.springframework.data" level="TRACE"/>
+    <logger name="org.springframework.data" level="INFO"/>
     <!-- <logger name="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" level="TRACE"/> -->
 
 </configuration>
